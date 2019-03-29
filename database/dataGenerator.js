@@ -1,9 +1,10 @@
 const sqlite3 = require('sqlite3').verbose();
 const faker = require('faker');
+const path = require('path');
 const { userSchema, apartmentSchema, commentSchema, reviewSchema, apartmentAddresses } = require('./schema.js');
 
 
-let db = new sqlite3.Database('./reviews.db', (err) => {
+let db = new sqlite3.Database(path.join(__dirname, './reviews.db'), err => {
   if (err) {
     console.error('ERROR: There was a problem connecting to the review database.');
   } else {
@@ -41,7 +42,7 @@ db.serialize(() => {
   const commentStatement = db.prepare(commentQuery);
   for (let i = 1; i < 101; i++) {
     commentStatement.run(
-      faker.date.month() + faker.random.number({ min: 2015, max: 2019}), 
+      faker.date.month() + ' ' + faker.random.number({ min: 2015, max: 2019}), 
       faker.lorem.sentences(Math.ceil(Math.random() * 6)),
       i);
   }
@@ -53,7 +54,7 @@ db.serialize(() => {
   for (let i = 0; i < 4000; i++) {
     if (Math.random() > .5) {
       reviewStatement.run(
-        faker.date.month() + faker.random.number({ min: 2015, max: 2019}), 
+        faker.date.month() + ' ' + faker.random.number({ min: 2015, max: 2019}), 
         faker.lorem.sentences(Math.ceil(Math.random() * 6)), 
         Math.floor((() => Math.random() * 5)()) + .5,
         faker.random.number({
@@ -66,7 +67,7 @@ db.serialize(() => {
         }))
     } else {
       reviewStatement.run(
-        faker.date.month() + faker.random.number({ min: 2015, max: 2019}), 
+        faker.date.month() + ' ' + faker.random.number({ min: 2015, max: 2019}), 
         faker.lorem.sentences(Math.ceil(Math.random() * 6)), 
         Math.floor((() => Math.random() * 5)()) + 1,
         faker.random.number({
