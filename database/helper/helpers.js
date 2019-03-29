@@ -1,0 +1,19 @@
+const sqlite3 = require('sqlite3');
+
+const getReviewsFromDatabase = (id, callback) => {
+  let db = new sqlite3.Database('./reviews.db', (err) => {
+    if (err) {
+      console.log(err)
+    } else {
+      db.all(`SELECT users.name, users.avatar, reviews.date, reviews.text, reviews.rating FROM reviews, users WHERE users.id = reviews.user_id AND reviews.apartment_id = ${id};`, [], (err, rows) => {  
+        if (err) {
+          console.log(err)
+        } else {
+          db.close(() => { callback(null, rows), console.log('Got reviews and closed database')})
+        }
+      });
+    }
+  });
+}
+
+module.exports.getReviewsFromDatabase = getReviewsFromDatabase;

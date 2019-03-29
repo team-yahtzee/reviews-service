@@ -1,3 +1,5 @@
-import CountDown from './components/countdown.jsx';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ReviewList from '../client/components/ReviewList.jsx';
 
-window.CountDown = CountDown;
+ReactDOM.render(<ReviewList />, document.getElementById('reviews'));

@@ -41,7 +41,7 @@ db.serialize(() => {
   const commentStatement = db.prepare(commentQuery);
   for (let i = 1; i < 101; i++) {
     commentStatement.run(
-      faker.date.past().toString().slice(4, 15), 
+      faker.date.month() + faker.random.number({ min: 2015, max: 2019}), 
       faker.lorem.sentences(Math.ceil(Math.random() * 6)),
       i);
   }
@@ -50,31 +50,31 @@ db.serialize(() => {
   db.run(`DROP TABLE IF EXISTS reviews`);
   db.run(reviewSchema);
   const reviewStatement = db.prepare(reviewQuery);
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < 4000; i++) {
     if (Math.random() > .5) {
       reviewStatement.run(
-        faker.date.past().toString().slice(4, 15), 
+        faker.date.month() + faker.random.number({ min: 2015, max: 2019}), 
         faker.lorem.sentences(Math.ceil(Math.random() * 6)), 
         Math.floor((() => Math.random() * 5)()) + .5,
         faker.random.number({
-          min: 0,
+          min: 1,
           max: 200
         }),
         faker.random.number({
-          min: 0,
+          min: 1,
           max: 100
         }))
     } else {
       reviewStatement.run(
-        faker.date.past().toString().slice(4, 15), 
+        faker.date.month() + faker.random.number({ min: 2015, max: 2019}), 
         faker.lorem.sentences(Math.ceil(Math.random() * 6)), 
-        Math.floor((() => Math.random() * 5)()),
+        Math.floor((() => Math.random() * 5)()) + 1,
         faker.random.number({
-          min: 0,
+          min: 1,
           max: 200
         }),
         faker.random.number({
-          min: 0,
+          min: 1,
           max: 100
         })
       ); 
