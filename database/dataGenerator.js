@@ -55,7 +55,7 @@ db.serialize(() => {
     if (Math.random() > .5) {
       reviewStatement.run(
         faker.date.month() + ' ' + faker.random.number({ min: 2015, max: 2019}), 
-        faker.lorem.sentences(Math.ceil(Math.random() * 6)), 
+        faker.lorem.sentences(Math.ceil(Math.random() * 7)), 
         Math.floor((() => Math.random() * 5)()) + .5,
         faker.random.number({
           min: 1,
@@ -68,7 +68,7 @@ db.serialize(() => {
     } else {
       reviewStatement.run(
         faker.date.month() + ' ' + faker.random.number({ min: 2015, max: 2019}), 
-        faker.lorem.sentences(Math.ceil(Math.random() * 6)), 
+        faker.lorem.sentences(Math.ceil(Math.random() * 7)), 
         Math.floor((() => Math.random() * 5)()) + 1,
         faker.random.number({
           min: 1,
