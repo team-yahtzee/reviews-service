@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const path = require('path');
 const app = express();
 const port = process.env.PORT || 3002;
-const { getReviewsFromDatabase } = require('../database/helper/helpers.js');
+const { getReviewsFromDatabase, getSearchResultsFromDatabase } = require('../database/helper/helpers.js');
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '../public')));
@@ -15,6 +15,16 @@ app.get('/', (req, res) => {
 
 app.get('/apartment/:id', (req, res) => {
   getReviewsFromDatabase(req.params.id, (err, data) => {
+    if (err) {
+      console.error('Error retrieving reviews from database', err)
+    } else {
+      res.json(data);
+    }
+  });
+});
+
+app.get('/apartment/:id/search/:word', (req, res) => {
+  getSearchResultsFromDatabase(req.params.id, req.params.word, (err, data) => {
     if (err) {
       console.error('Error retrieving reviews from database', err)
     } else {

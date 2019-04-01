@@ -1,0 +1,178 @@
+#reviews {
+  max-width: 580px;
+  margin-left: 100px;
+}
+
+.total-reviews {
+  /* display: inline-block; */
+  position: relative;
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+  font-weight: bold;
+  font-size: 20px;
+  top: 26px;
+}
+
+.search-features {
+  font-family: Circular;
+  display: none;
+}
+
+#star-container {
+  position: relative;
+  left: 125px;
+  top:  4px;
+}
+
+#star0 {
+  padding-right: 6px;
+}
+
+#star1 {
+  padding-right: 6px;
+}
+
+#star2 {
+  padding-right: 6px;
+}
+
+#star3 {
+  padding-right: 6px;
+}
+
+.rating-category-container {
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;
+  font-size: 15px;
+  line-height: 1.43;
+  color: #484848;
+  background-color: #fff;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  
+}
+
+.review-container {
+  position: relative;
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  line-height: 1.43;
+  color: #484848;
+  background-color: #fff;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  bottom: -10px;
+}
+
+.name {
+  position: relative;
+  left: 57px;
+  bottom: 47px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.date {
+  font-size: 14px;
+  position: relative;
+  left: 57px;
+  bottom: 47px;
+}
+
+.avatar-pic {
+  position: relative;
+  width: 7%;
+  height: 7%;
+  border-radius: 50%;
+}
+
+.text {
+  position: relative;
+  bottom: 30px;
+  font-size: 16px;
+}
+
+.first-column {
+  flex: 1;
+}
+
+.second-column {
+  flex: 1;
+}
+
+.rating-category {
+  display: inline-block;
+  /* margin-bottom: 10px; */
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid rgb(228, 228, 228);
+  margin: 1em 0;
+  padding: 0;
+}
+
+hr.divider {
+  display: block;
+  position: relative;
+  bottom: 15px;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid rgb(228, 228, 228);
+  margin: 1em 0;
+  padding: 0;
+}
+
+.search-form {
+  position: relative;
+  left: 390px;
+  top: 0px;
+  border-radius: 5px;
+  border: 1px solid rgb(228, 228, 228);
+  padding: 10px; 
+  width: 150px;
+  height: 10px;
+  background: url(./images/magnifying-glass-icon-26762-resized2.png) no-repeat scroll 7px 7px;
+  padding-left: 30px;
+}
+
+input:focus {
+  outline:none;
+  border:1px solid #008489;
+}
+
+input::placeholder {
+  position: relative;
+  font-family: Circular;
+  font-size: 15px;
+  font-weight: 300;
+  top: 2px;
+}
+
+button {
+  background:none!important;
+  color: #008489;
+  border:none; 
+  padding:0!important;
+  font: inherit;
+  /*border is optional*/
+  /* border-bottom:1px solid #444;  */
+  cursor: pointer;
+}
+
+button:hover {
+  text-decoration: underline;
+}
+
+@font-face {
+  font-family: 'Circular';
+  src: url('./fonts/circular-pro-book.TTF');
+}
+
+@font-face {
+  font-family: 'CircularBold';
+  src: url('./fonts/circular-pro-bold.TTF');
+}
