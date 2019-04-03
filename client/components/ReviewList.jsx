@@ -53,6 +53,14 @@ class ReviewList extends React.Component {
     });
   }
 
+  sortReviews(dates) {
+    return dates.sort((a, b) => {
+      const dateA = new Date(a.date.replace(' ', ', '));
+      const dateB = new Date(b.date.replace(' ', ', '));
+      return dateB - dateA;
+    });
+  }
+
   calculateRating(reviews) {
     let total = 0;
     let average;
@@ -151,9 +159,9 @@ class ReviewList extends React.Component {
 
   renderReviews() {
     if (this.state.allResults === true) {
-      return this.state.reviews;
+      return this.sortReviews(this.state.reviews);
     } else {
-      return this.state.searchedReviews;
+      return this.sortReviews(this.state.searchedReviews);
     }
   }
 
