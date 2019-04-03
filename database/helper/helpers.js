@@ -22,7 +22,7 @@ const getSearchResultsFromDatabase = (id, word, callback) => {
     if (err) {
       console.log(err)
     } else {
-      db.all(`SELECT users.name, users.avatar, reviews.date, reviews.text, reviews.rating FROM users, reviews WHERE users.id = reviews.user_id AND reviews.apartment_id = ${id} AND reviews.text LIKE '%${word}%';`, [], (err, rows) => {  
+      db.all(`SELECT users.name, users.avatar, reviews.date, reviews.text, reviews.rating FROM users, reviews WHERE users.id = reviews.user_id AND reviews.apartment_id = ${id} AND (reviews.text LIKE '%${word}%' OR reviews.text LIKE '% ${word}%');`, [], (err, rows) => {  
         if (err) {
           console.log('Error querying database', err)
         } else {

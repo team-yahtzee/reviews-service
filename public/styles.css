@@ -23,6 +23,12 @@
   top:  4px;
 }
 
+.star-category-container {
+  position: relative;
+  left: 170px;
+  bottom: 20px;
+}
+
 #star0 {
   padding-right: 6px;
 }
@@ -94,11 +100,12 @@
 }
 
 .first-column {
-  flex: 1;
+  position: relative;
 }
 
 .second-column {
-  flex: 1;
+  position: relative;
+  left: 205px;
 }
 
 .rating-category {
@@ -129,7 +136,7 @@ hr.divider {
 .search-form {
   position: relative;
   left: 390px;
-  top: 0px;
+  bottom: 20px;
   border-radius: 5px;
   border: 1px solid rgb(228, 228, 228);
   padding: 10px; 
@@ -137,6 +144,13 @@ hr.divider {
   height: 10px;
   background: url(./images/magnifying-glass-icon-26762-resized2.png) no-repeat scroll 7px 7px;
   padding-left: 30px;
+}
+
+.show-all-reviews {
+  display: none;
+  position: relative;
+  left: 445px;
+  bottom: 15px;
 }
 
 input:focus {
@@ -157,10 +171,13 @@ button {
   color: #008489;
   border:none; 
   padding:0!important;
-  font: inherit;
-  /*border is optional*/
-  /* border-bottom:1px solid #444;  */
+  font-family: Circular;
+  font-size: 15px;
   cursor: pointer;
+}
+
+button:focus {
+  outline: none;
 }
 
 button:hover {

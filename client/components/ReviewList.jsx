@@ -10,31 +10,50 @@ class ReviewList extends React.Component {
   constructor(props) {
     super(props);
   
-  
     this.state = {
-      rating: null,
       reviews: [],
-      searchedReviews: [],
-      searchedWord: '',
+      rating: null,
       allResults: true,
+      searchedWord: '',
+      searchedReviews: [],
+      categories: ['accuracy', 'communication', 'cleanliness', 'location', 'check-in', 'value']
     }
 
     this.getReviews = this.getReviews.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.getSearchResults = this.getSearchResults.bind(this);
   }
   
+  boldSearchedWord() {
+    let { searchedReviews, searchedWord } = this.state;
+    let regex = new RegExp(`(\\b)(${searchedWord})(\\b)`, 'gi');
+    for (let i = 0; i < searchedReviews.length; i++) {
+      var currentReview = document.getElementsByClassName(`read-more-${i}`);
+      if (searchedReviews[i].text.includes(searchedWord)) {
+        currentReview[0].innerHTML = searchedReviews[i].text.replace(regex, '$1<b>$2</b>$3');
+      }
+    }
+  }
+
   componentDidMount() {
     this.getReviews()
-    .then(() => { this.calculateRating() })
+    .then(() => { this.calculateRating(this.state.reviews) })
     .then(() => { this.renderStars() })
+    .then(() => { this.renderCategoryStars() })
     .catch(err => console.log('ERROR!', err));
   }
 
-  calculateRating() {
-    const reviews = this.state.reviews;
+  getReviews(id) {
+    return axios.get(`/apartment/33`)
+    .then(({ data }) => {
+      this.setState({
+        reviews: data
+      });
+    });
+  }
+
+  calculateRating(reviews) {
     let total = 0;
     let average;
     
@@ -56,13 +75,14 @@ class ReviewList extends React.Component {
     });
   }
 
-  getReviews(id) {
-    return axios.get(`/apartment/2`)
-    .then(({ data }) => {
-      this.setState({
-        reviews: data
-      });
-    });
+  calculateCategoryRatings(rating) {
+    let firstDigit = Number(rating.toString()[0]);
+
+    if (.5 - (rating - firstDigit) > -.25 && .5 - (rating - firstDigit) <= .25) {
+      return firstDigit + .5;
+    } else {
+      return firstDigit;
+    }
   }
 
   getSearchResults(word) {
@@ -76,31 +96,55 @@ class ReviewList extends React.Component {
     .then(() => {
       this.addSearchFeatures();
     })
+    .then(() => {
+      this.boldSearchedWord();
+    })
   }
 
   handleKeyPress(e) {
     if (e.charCode === 13) {
       this.getSearchResults(e.target.value);
+      this.setState({
+        searchedWord: e.target.value
+      })
     }
   }
 
-  handleChange(e) {
+  handleClick() {
     this.setState({
-      [e.target.name]: e.target.value
-    });
+      allResults: true
+    }, () => {this.addSearchFeatures()});
   }
 
   renderStars() {
-    var rating = this.state.rating;
+    let rating = this.state.rating;
 
     for (let i = 0; i < 5; i++) {
-      var star = document.getElementById(`star${i}`);
+      let star = document.getElementById(`star${i}`);
       if (rating - i >= 1) {
         star.setAttribute("src", fullStar);
       } else if (rating - i === .5) {
         star.setAttribute("src", halfStar);
       } else {
         star.setAttribute("src", emptyStar);
+      }
+    }
+  }
+
+  renderCategoryStars() {
+    let rating = this.calculateCategoryRatings(Math.random() * 2 + 3);
+    let categories = this.state.categories;
+
+    for (let i = 0; i < categories.length; i++) {
+      for (let j = 0; j < 5; j++) {
+        let star = document.getElementsByClassName(`${categories[i]}-category-star${j}`);
+        if (rating - i >= 1) {
+          star[0].setAttribute("src", fullStar);
+        } else if (rating - i === .5) {
+          star[0].setAttribute("src", halfStar);
+        } else {
+          star[0].setAttribute("src", emptyStar);
+        }
       }
     }
   }
@@ -116,17 +160,20 @@ class ReviewList extends React.Component {
   addSearchFeatures() {
     let searchFeatures = document.getElementsByClassName("search-features");
     let categoryContainer = document.getElementsByClassName("rating-category-container");
-
+    let showAllReviewsButton = document.getElementsByClassName("show-all-reviews");
+    
     if (this.state.allResults === false) {
       for (let i = 0; i < searchFeatures.length; i++) {
         searchFeatures[i].style.display = "block";
       }
       categoryContainer[0].style.display = "none";
+      showAllReviewsButton[0].style.display = "block";
     } else {
       for (let i = 0; i < searchFeatures.length; i++) {
         searchFeatures[i].style.display = "none";
       }
       categoryContainer[0].style.display = "block";
+      showAllReviewsButton[0].style.display = "none";
     }
   }
 
@@ -141,74 +188,75 @@ class ReviewList extends React.Component {
           <img id="star3"></img>
           <img id="star4"></img>
         </div>
-        <SearchForm value={this.state.searchedWord} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} />
+        <SearchForm value={this.state.searchedWord} handleKeyPress={this.handleKeyPress} />
         <hr/>
         <div className="rating-category-container">
           <div className="first-column">
             <div className="rating-category">Accurary
-              <div className="star-container">
-                <img className="category-star0"></img>
-                <img className="category-star1"></img>
-                <img className="category-star2"></img>
-                <img className="category-star3"></img>
-                <img className="category-star4"></img>
+              <div className="star-category-container">
+                <img className={`${this.state.categories[0]}-category-star0`}></img>
+                <img className={`${this.state.categories[0]}-category-star1`}></img>
+                <img className={`${this.state.categories[0]}-category-star2`}></img>
+                <img className={`${this.state.categories[0]}-category-star3`}></img>
+                <img className={`${this.state.categories[0]}-category-star4`}></img>
               </div>
             </div>
-            <br/>
+            <br/>           
             <div className="rating-category">Communication
-              <div className="star-container">
-                <img className="category-star0"></img>
-                <img className="category-star1"></img>
-                <img className="category-star2"></img>
-                <img className="category-star3"></img>
-                <img className="category-star4"></img>
+              <div className="star-category-container">
+                <img className={`${this.state.categories[1]}-category-star0`}></img>
+                <img className={`${this.state.categories[1]}-category-star1`}></img>
+                <img className={`${this.state.categories[1]}-category-star2`}></img>
+                <img className={`${this.state.categories[1]}-category-star3`}></img>
+                <img className={`${this.state.categories[1]}-category-star4`}></img>
               </div>
             </div>
             <br/>
             <div className="rating-category">Cleanliness
-              <div className="star-container">
-                <img className="category-star0"></img>
-                <img className="category-star1"></img>
-                <img className="category-star2"></img>
-                <img className="category-star3"></img>
-                <img className="category-star4"></img>
+              <div className="star-category-container">
+                <img className={`${this.state.categories[2]}-category-star0`}></img>
+                <img className={`${this.state.categories[2]}-category-star1`}></img>
+                <img className={`${this.state.categories[2]}-category-star2`}></img>
+                <img className={`${this.state.categories[2]}-category-star3`}></img>
+                <img className={`${this.state.categories[2]}-category-star4`}></img>
               </div>
             </div>
           </div>
           <div className="second-column">
             <div className="rating-category">Location
-              <div className="star-container">
-                <img className="category-star0"></img>
-                <img className="category-star1"></img>
-                <img className="category-star2"></img>
-                <img className="category-star3"></img>
-                <img className="category-star4"></img>
+              <div className="star-category-container">
+                <img className={`${this.state.categories[3]}-category-star0`}></img>
+                <img className={`${this.state.categories[3]}-category-star1`}></img>
+                <img className={`${this.state.categories[3]}-category-star2`}></img>
+                <img className={`${this.state.categories[3]}-category-star3`}></img>
+                <img className={`${this.state.categories[3]}-category-star4`}></img>
               </div>
             </div>
             <br/>
             <div className="rating-category">Check-in
-              <div className="star-container">
-                <img className="category-star0"></img>
-                <img className="category-star1"></img>
-                <img className="category-star2"></img>
-                <img className="category-star3"></img>
-                <img className="category-star4"></img>
+              <div className="star-category-container">
+                <img className={`${this.state.categories[4]}-category-star0`}></img>
+                <img className={`${this.state.categories[4]}-category-star1`}></img>
+                <img className={`${this.state.categories[4]}-category-star2`}></img>
+                <img className={`${this.state.categories[4]}-category-star3`}></img>
+                <img className={`${this.state.categories[4]}-category-star4`}></img>
               </div>
             </div>
             <br/>
             <div className="rating-category">Value
-              <div className="star-container">
-                <img className="category-star0"></img>
-                <img className="category-star1"></img>
-                <img className="category-star2"></img>
-                <img className="category-star3"></img>
-                <img className="category-star4"></img>
+              <div className="star-category-container">
+                <img className={`${this.state.categories[5]}-category-star0`}></img>
+                <img className={`${this.state.categories[5]}-category-star1`}></img>
+                <img className={`${this.state.categories[5]}-category-star2`}></img>
+                <img className={`${this.state.categories[5]}-category-star3`}></img>
+                <img className={`${this.state.categories[5]}-category-star4`}></img>
               </div>
             </div>
           </div>
         </div>
         <hr/>
         <div className="search-features">{this.state.searchedReviews.length} guests have mentioned "<strong>{this.state.searchedWord}</strong>"</div>
+        <button className="show-all-reviews" onClick={() => {this.handleClick()}}>Back to all reviews</button>
         <hr className="search-features"/> 
         <Review reviews={this.renderReviews()} />
       </div>

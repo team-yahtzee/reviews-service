@@ -21,7 +21,7 @@ class Review extends React.Component {
       const lessText = text.slice(0, 280);
       const moreText = text.slice(280, text.length);
       
-      return <React.Fragment>{lessText} <button onClick={() => this.handleClick(moreText)}>Read more</button></React.Fragment>
+      return <React.Fragment>{lessText} <button className="read-more-button" onClick={() => this.handleClick(moreText)}>Read more</button></React.Fragment>
 
     } else {
       return text;
@@ -33,7 +33,7 @@ class Review extends React.Component {
   render() {
     return (
       <div>
-        {this.props.reviews.map(review => {
+        {this.props.reviews.map((review, i) => {
           return (
             <div key={review.text} className="review-container" >
               <div className="header-container">
@@ -48,7 +48,7 @@ class Review extends React.Component {
                 </div>
               </div>
               <div className="text">
-                <div className="read-more">{this.readMore(review.text)}</div>
+                <div className={`read-more-${i}`}>{this.readMore(review.text)}</div>
               </div>
               <hr className="divider"/>
             </div>
