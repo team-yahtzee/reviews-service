@@ -19,10 +19,8 @@ class ReviewList extends React.Component {
       categories: ['accuracy', 'communication', 'cleanliness', 'location', 'check-in', 'value']
     }
 
-    this.getReviews = this.getReviews.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.getSearchResults = this.getSearchResults.bind(this);
   }
   
   boldSearchedWord() {
@@ -45,7 +43,7 @@ class ReviewList extends React.Component {
   }
 
   getReviews(id) {
-    return axios.get(`/apartment/33`)
+    return axios.get(`/apartment/100`)
     .then(({ data }) => {
       this.setState({
         reviews: data
@@ -140,15 +138,14 @@ class ReviewList extends React.Component {
   }
 
   renderCategoryStars() {
-    let rating = this.calculateCategoryRatings(Math.random() * 2 + 3);
     let categories = this.state.categories;
 
     for (let i = 0; i < categories.length; i++) {
       for (let j = 0; j < 5; j++) {
         let star = document.getElementsByClassName(`${categories[i]}-category-star${j}`);
-        if (rating - i >= 1) {
+        if (this.calculateCategoryRatings(Math.random() * 2 + 4) - j >= 1) {
           star[0].setAttribute("src", fullStar);
-        } else if (rating - i === .5) {
+        } else if (this.calculateCategoryRatings(Math.random() * 2 + 4) - j === .5) {
           star[0].setAttribute("src", halfStar);
         } else {
           star[0].setAttribute("src", emptyStar);
@@ -201,63 +198,63 @@ class ReviewList extends React.Component {
         <div className="rating-category-container">
           <div className="first-column">
             <div className="rating-category">Accurary
-              <div className="star-category-container">
-                <img className={`${this.state.categories[0]}-category-star0`}></img>
-                <img className={`${this.state.categories[0]}-category-star1`}></img>
-                <img className={`${this.state.categories[0]}-category-star2`}></img>
-                <img className={`${this.state.categories[0]}-category-star3`}></img>
-                <img className={`${this.state.categories[0]}-category-star4`}></img>
+              <div className="left-star-category-container">
+                <img className="accuracy-category-star0"></img>
+                <img className="accuracy-category-star1"></img>
+                <img className="accuracy-category-star2"></img>
+                <img className="accuracy-category-star3"></img>
+                <img className="accuracy-category-star4"></img>
               </div>
             </div>
             <br/>           
             <div className="rating-category">Communication
-              <div className="star-category-container">
-                <img className={`${this.state.categories[1]}-category-star0`}></img>
-                <img className={`${this.state.categories[1]}-category-star1`}></img>
-                <img className={`${this.state.categories[1]}-category-star2`}></img>
-                <img className={`${this.state.categories[1]}-category-star3`}></img>
-                <img className={`${this.state.categories[1]}-category-star4`}></img>
+              <div className="left-star-category-container">
+                <img className="communication-category-star0"></img>
+                <img className="communication-category-star1"></img>
+                <img className="communication-category-star2"></img>
+                <img className="communication-category-star3"></img>
+                <img className="communication-category-star4"></img>
               </div>
             </div>
             <br/>
             <div className="rating-category">Cleanliness
-              <div className="star-category-container">
-                <img className={`${this.state.categories[2]}-category-star0`}></img>
-                <img className={`${this.state.categories[2]}-category-star1`}></img>
-                <img className={`${this.state.categories[2]}-category-star2`}></img>
-                <img className={`${this.state.categories[2]}-category-star3`}></img>
-                <img className={`${this.state.categories[2]}-category-star4`}></img>
+              <div className="left-star-category-container">
+                <img className="cleanliness-category-star0"></img>
+                <img className="cleanliness-category-star1"></img>
+                <img className="cleanliness-category-star2"></img>
+                <img className="cleanliness-category-star3"></img>
+                <img className="cleanliness-category-star4"></img>
               </div>
             </div>
           </div>
           <div className="second-column">
             <div className="rating-category">Location
-              <div className="star-category-container">
-                <img className={`${this.state.categories[3]}-category-star0`}></img>
-                <img className={`${this.state.categories[3]}-category-star1`}></img>
-                <img className={`${this.state.categories[3]}-category-star2`}></img>
-                <img className={`${this.state.categories[3]}-category-star3`}></img>
-                <img className={`${this.state.categories[3]}-category-star4`}></img>
+              <div className="right-star-category-container">
+                <img className="location-category-star0"></img>
+                <img className="location-category-star1"></img>
+                <img className="location-category-star2"></img>
+                <img className="location-category-star3"></img>
+                <img className="location-category-star4"></img>
               </div>
             </div>
             <br/>
             <div className="rating-category">Check-in
-              <div className="star-category-container">
-                <img className={`${this.state.categories[4]}-category-star0`}></img>
-                <img className={`${this.state.categories[4]}-category-star1`}></img>
-                <img className={`${this.state.categories[4]}-category-star2`}></img>
-                <img className={`${this.state.categories[4]}-category-star3`}></img>
-                <img className={`${this.state.categories[4]}-category-star4`}></img>
+              <div className="right-star-category-container">
+                <img className="check-in-category-star0"></img>
+                <img className="check-in-category-star1"></img>
+                <img className="check-in-category-star2"></img>
+                <img className="check-in-category-star3"></img>
+                <img className="check-in-category-star4"></img>
               </div>
             </div>
             <br/>
             <div className="rating-category">Value
-              <div className="star-category-container">
-                <img className={`${this.state.categories[5]}-category-star0`}></img>
-                <img className={`${this.state.categories[5]}-category-star1`}></img>
-                <img className={`${this.state.categories[5]}-category-star2`}></img>
-                <img className={`${this.state.categories[5]}-category-star3`}></img>
-                <img className={`${this.state.categories[5]}-category-star4`}></img>
+              <div className="right-star-category-container">
+                <img className="value-category-star0"></img>
+                <img className="value-category-star1"></img>
+                <img className="value-category-star2"></img>
+                <img className="value-category-star3"></img>
+                <img className="value-category-star4"></img>
               </div>
             </div>
           </div>

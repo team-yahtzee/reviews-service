@@ -4,12 +4,14 @@
 }
 
 .total-reviews {
-  /* display: inline-block; */
   position: relative;
-  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
-  font-weight: bold;
   font-size: 20px;
-  top: 26px;
+  top: 50px;
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  line-height: 1.25em !important;
+  color: #484848 !important;
 }
 
 .search-features {
@@ -19,49 +21,52 @@
 
 #star-container {
   position: relative;
-  left: 125px;
-  top:  4px;
+  left: 140px;
+  top:  28px;
 }
 
-.star-category-container {
+.left-star-category-container {
   position: relative;
   left: 170px;
   bottom: 20px;
 }
 
-#star0 {
-  padding-right: 6px;
+.right-star-category-container {
+  position: relative;
+  left: 145px;
+  bottom: 20px;
 }
 
-#star1 {
+#star0, #star1, #star2, #star3, #star4 {
   padding-right: 6px;
+  width: 3%;
+  height: 3%;
 }
 
-#star2 {
+.accuracy-category-star0, .accuracy-category-star1, .accuracy-category-star2, .accuracy-category-star3, .accuracy-category-star4, .communication-category-star0, .communication-category-star1, .communication-category-star2, .communication-category-star3, .communication-category-star4, .cleanliness-category-star0, .cleanliness-category-star1, .cleanliness-category-star2, .cleanliness-category-star3, .cleanliness-category-star4, .location-category-star0, .location-category-star1, .location-category-star2, .location-category-star3, .location-category-star4, .check-in-category-star0, .check-in-category-star1, .check-in-category-star2, .check-in-category-star3, .check-in-category-star4, .value-category-star0, .value-category-star1, .value-category-star2, .value-category-star3, .value-category-star4 {
   padding-right: 6px;
-}
-
-#star3 {
-  padding-right: 6px;
+  width: 6%;
+  height: 6%;
 }
 
 .rating-category-container {
-  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;
+  font-family: Poppins, sans-serif;
   font-size: 15px;
+  font-weight: 300;
   line-height: 1.43;
   color: #484848;
   background-color: #fff;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  display: flex;
-  
+  display: flex;  
 }
 
 .review-container {
   position: relative;
-  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;
+  font-family: Poppins, sans-serif;
   font-size: 14px;
+  font-weight: 300;
   line-height: 1.43;
   color: #484848;
   background-color: #fff;
@@ -73,6 +78,7 @@
 
 .name {
   position: relative;
+  font-weight: 500 !important;
   left: 57px;
   bottom: 47px;
   font-weight: bold;
@@ -80,8 +86,8 @@
 }
 
 .date {
-  font-size: 14px;
   position: relative;
+  font-size: 14px;
   left: 57px;
   bottom: 47px;
 }
@@ -105,12 +111,11 @@
 
 .second-column {
   position: relative;
-  left: 205px;
+  left: 30px;
 }
 
 .rating-category {
   display: inline-block;
-  /* margin-bottom: 10px; */
 }
 
 hr {
@@ -136,7 +141,7 @@ hr.divider {
 .search-form {
   position: relative;
   left: 390px;
-  bottom: 20px;
+  bottom: 5px;
   border-radius: 5px;
   border: 1px solid rgb(228, 228, 228);
   padding: 10px; 
@@ -154,8 +159,8 @@ hr.divider {
 }
 
 input:focus {
-  outline:none;
-  border:1px solid #008489;
+  outline: none;
+  border: 1px solid #008489;
 }
 
 input::placeholder {
@@ -167,10 +172,10 @@ input::placeholder {
 }
 
 button {
-  background:none!important;
+  background: none !important;
   color: #008489;
-  border:none; 
-  padding:0!important;
+  border: none; 
+  padding: 0 !important;
   font-family: Circular;
   font-size: 15px;
   cursor: pointer;
