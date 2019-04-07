@@ -3,9 +3,9 @@ import axios from 'axios';
 import Review from './Review.jsx';
 import SearchForm from './SearchForm.jsx';
 import ReactPaginate from 'react-paginate';
-import emptyStar from '../../public/images/empty-star.png';
-import halfStar from '../../public/images/half-star.png';
-import fullStar from '../../public/images/full-star.png';
+import emptyStar from '../../public/images/airbnb-empty-star.png';
+import halfStar from '../../public/images/airbnb-half-star.png';
+import fullStar from '../../public/images/airbnb-full-star.png';
 
 class ReviewList extends React.Component {
   constructor(props) {
@@ -16,12 +16,14 @@ class ReviewList extends React.Component {
       reviews: [],
       rating: null,
       pageCount: 1,
+      searchValue: '',
       allResults: true,
       searchedWord: '',
       searchedReviews: [],
       categories: ['accuracy', 'communication', 'cleanliness', 'location', 'check-in', 'value']
     }
 
+    this.handleChange = this.handleChange.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
@@ -31,7 +33,7 @@ class ReviewList extends React.Component {
     let { searchedReviews, searchedWord } = this.state;
     let regex = new RegExp(`(\\b)(${searchedWord})(\\b)`, 'gi');
     for (let i = 0; i < searchedReviews.length; i++) {
-      var currentReview = document.getElementsByClassName(`read-more-${i}`);
+      let currentReview = document.getElementsByClassName(`read-more-${i}`);
       if (searchedReviews[i].text.includes(searchedWord)) {
         currentReview[0].innerHTML = searchedReviews[i].text.replace(regex, '$1<b>$2</b>$3');
       }
@@ -82,6 +84,16 @@ class ReviewList extends React.Component {
     });
   }
 
+  renderXButton() {
+    let clearInputButton = document.getElementsByClassName("clear-input");
+
+    if (this.state.searchValue !== '') {
+      clearInputButton[0].style.display = "block";
+    } else {
+      clearInputButton[0].style.display = "none";
+    }
+  }
+
   calculateRating(reviews) {
     let total = 0;
     let average;
@@ -130,6 +142,12 @@ class ReviewList extends React.Component {
     })
   }
 
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    }, () => { this.renderXButton() });
+  }
+
   handleKeyPress(e) {
     if (e.charCode === 13) {
       this.getSearchResults(e.target.value);
@@ -149,6 +167,12 @@ class ReviewList extends React.Component {
     boldedWords.forEach(word => {
       word.parentNode.replaceChild(word.firstChild, word)
     });
+
+    // Clears input form
+    let input = document.getElementsByClassName("search-form");
+    let clearInputButton = document.getElementsByClassName("clear-input");
+    input[0].value = '';
+    clearInputButton[0].style.display = "none";
   }
 
   renderStars() {
@@ -222,7 +246,8 @@ class ReviewList extends React.Component {
           <img id="star3"></img>
           <img id="star4"></img>
         </div>
-        <SearchForm value={this.state.searchedWord} handleKeyPress={this.handleKeyPress} />
+        <SearchForm value={this.state.searchValue} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} />
+        <button className="clear-input" onClick={() => {this.handleClick()}}>&#x2715;</button>
         <hr/>
         <div className="rating-category-container">
           <div className="first-column">

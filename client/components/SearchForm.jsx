@@ -1,7 +1,7 @@
 const SearchForm = (props) => {
   return (
     <div>
-      <input className="search-form" name="searchedWord" onKeyPress={props.handleKeyPress} placeholder="Search reviews" />
+      <input type="search" className="search-form" name="searchValue" onChange={props.handleChange} onKeyPress={props.handleKeyPress} placeholder="Search reviews" />
     </div>
   );
 }

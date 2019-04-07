@@ -15,8 +15,11 @@
 }
 
 .search-features {
+  position: relative;
   font-family: Poppins;
   font-size: 14px;
+  top: 8px;
+  height: 6px;
   display: none;
 }
 
@@ -148,7 +151,8 @@ hr.divider {
   padding: 10px; 
   width: 190px;
   height: 33px;
-  background: url(./images/magnifying-glass-icon-26762-resized2.png) no-repeat scroll 7px 7px;
+  background: url(./images/magnifying-glass.png) no-repeat scroll 9px 9px;
+  background-size: 14px 14px;
   padding-left: 30px;
 }
 
@@ -157,7 +161,11 @@ hr.divider {
   position: relative;
   font-size: 14px;
   left: 445px;
-  bottom: 15px;
+  top: 4px;
+}
+
+.clear-input {
+  display: none;
 }
 
 input:focus {
@@ -183,11 +191,11 @@ button {
   cursor: pointer;
 }
 
-button:focus {
+button.show-all-reviews:focus, button.read-more-button:focus {
   outline: none;
 }
 
-button:hover {
+button.show-all-reviews:hover, button.read-more-button:hover {
   text-decoration: underline;
 }
 
@@ -219,6 +227,16 @@ button:hover {
   display: inline-block;
   padding: 8px 16px;
 
+}
+
+.clear-input {
+  position: relative;
+  color: rgb(165, 165, 165);
+  height: 0px;
+  left: 556px;
+  bottom: 39px;
+  font-size: 18px;
+  outline: none;
 }
 
 [role=button]:focus-within {
