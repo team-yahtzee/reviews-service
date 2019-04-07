@@ -34,6 +34,7 @@ app.get('/apartment/:id/search/:word', (req, res) => {
 });
 
 
+
 app.post('/', (req, res) => {
   
 });

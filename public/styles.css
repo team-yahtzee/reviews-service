@@ -6,7 +6,7 @@
 .total-reviews {
   position: relative;
   font-size: 20px;
-  top: 50px;
+  top: 38px;
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif !important;
   font-size: 24px !important;
   font-weight: 800 !important;
@@ -15,14 +15,15 @@
 }
 
 .search-features {
-  font-family: Circular;
+  font-family: Poppins;
+  font-size: 14px;
   display: none;
 }
 
 #star-container {
   position: relative;
   left: 140px;
-  top:  28px;
+  top:  14px;
 }
 
 .left-star-category-container {
@@ -39,14 +40,14 @@
 
 #star0, #star1, #star2, #star3, #star4 {
   padding-right: 6px;
-  width: 3%;
-  height: 3%;
+  width: 4%;
+  height: 4%;
 }
 
 .accuracy-category-star0, .accuracy-category-star1, .accuracy-category-star2, .accuracy-category-star3, .accuracy-category-star4, .communication-category-star0, .communication-category-star1, .communication-category-star2, .communication-category-star3, .communication-category-star4, .cleanliness-category-star0, .cleanliness-category-star1, .cleanliness-category-star2, .cleanliness-category-star3, .cleanliness-category-star4, .location-category-star0, .location-category-star1, .location-category-star2, .location-category-star3, .location-category-star4, .check-in-category-star0, .check-in-category-star1, .check-in-category-star2, .check-in-category-star3, .check-in-category-star4, .value-category-star0, .value-category-star1, .value-category-star2, .value-category-star3, .value-category-star4 {
   padding-right: 6px;
-  width: 6%;
-  height: 6%;
+  width: 8%;
+  height: 8%;
 }
 
 .rating-category-container {
@@ -80,7 +81,7 @@
   position: relative;
   font-weight: 500 !important;
   left: 57px;
-  bottom: 47px;
+  bottom: 42px;
   font-weight: bold;
   font-size: 16px;
 }
@@ -89,7 +90,7 @@
   position: relative;
   font-size: 14px;
   left: 57px;
-  bottom: 47px;
+  bottom: 42px;
 }
 
 .avatar-pic {
@@ -141,12 +142,12 @@ hr.divider {
 .search-form {
   position: relative;
   left: 390px;
-  bottom: 5px;
+  bottom: 10px;
   border-radius: 5px;
   border: 1px solid rgb(228, 228, 228);
   padding: 10px; 
-  width: 150px;
-  height: 10px;
+  width: 190px;
+  height: 33px;
   background: url(./images/magnifying-glass-icon-26762-resized2.png) no-repeat scroll 7px 7px;
   padding-left: 30px;
 }
@@ -154,6 +155,7 @@ hr.divider {
 .show-all-reviews {
   display: none;
   position: relative;
+  font-size: 14px;
   left: 445px;
   bottom: 15px;
 }
@@ -176,8 +178,8 @@ button {
   color: #008489;
   border: none; 
   padding: 0 !important;
-  font-family: Circular;
-  font-size: 15px;
+  font-family: Poppins;
+  font-size: 16px;
   cursor: pointer;
 }
 
@@ -197,4 +199,78 @@ button:hover {
 @font-face {
   font-family: 'CircularBold';
   src: url('./fonts/circular-pro-bold.TTF');
+}
+
+#react-paginate ul {
+  display: inline-block;
+}
+
+#react-paginate li {
+  display: inline-block;
+  background: none;
+  color: none;
+  border-radius: 50%;
+  padding:0!important;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 15px;
+  cursor: pointer;
+  list-style: none;
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+
+}
+
+[role=button]:focus-within {
+  background: #008489 !important;
+  color: #008489;
+  border: none; 
+  font-size: 15px;
+  border-radius: 50%;
+  outline: none;
+}
+
+[role=button] {
+  border-width: 10px;
+  background: white !important;
+  color: #008489;
+}
+
+[role=button]:hover {
+  text-decoration: underline;
+}
+
+.item {
+  background: #008489 !important;
+  color: #008489;
+  border: none;
+  font-size: 15px;
+  border-radius: 20em;
+  outline: none;
+}
+
+a {
+  border-color: white !important; 
+}
+
+#react-paginate li:hover {
+  outline:none;
+  background: none;
+}
+
+.page {
+  background: #ffe5e5;
+  padding: 5px;
+  margin-left: 35px;
+}
+
+.next, .previous, .break-me {
+  padding: 5px;
+  margin-left: 35px;
+}
+
+.next, .previous {
+  border: 1px;
+  border-color: #008489;
+  border-radius: 50%;
 }

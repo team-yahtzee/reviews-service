@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Review from './Review.jsx';
 import SearchForm from './SearchForm.jsx';
+import ReactPaginate from 'react-paginate';
 import emptyStar from '../../public/images/empty-star.png';
 import halfStar from '../../public/images/half-star.png';
 import fullStar from '../../public/images/full-star.png';
@@ -11,8 +12,10 @@ class ReviewList extends React.Component {
     super(props);
   
     this.state = {
+      offset: 0,
       reviews: [],
       rating: null,
+      pageCount: 1,
       allResults: true,
       searchedWord: '',
       searchedReviews: [],
@@ -21,6 +24,7 @@ class ReviewList extends React.Component {
 
     this.renderReviews = this.renderReviews.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
   
   boldSearchedWord() {
@@ -43,13 +47,32 @@ class ReviewList extends React.Component {
   }
 
   getReviews(id) {
-    return axios.get(`/apartment/100`)
+    return axios({
+     url: `/apartment/33`,
+     method: 'get',
+     data: { limit: 7, offset: this.state.offset } 
+    })
     .then(({ data }) => {
+      console.log(data)
       this.setState({
-        reviews: data
+        reviews: data,
+        pageCount: Math.ceil(data.length / 7)
       });
+    })
+    .catch(() => { 
+      console.error('Error retrieving reviews');
     });
   }
+
+  handlePageClick(data) {
+    console.log('selected data', data)
+    let selected = data.selected;
+    let offset = Math.ceil(selected * 7);
+
+    this.setState({ offset: offset }, () => {
+      this.getReviews();
+    });
+  };
 
   sortReviews(dates) {
     return dates.sort((a, b) => {
@@ -120,6 +143,12 @@ class ReviewList extends React.Component {
     this.setState({
       allResults: true
     }, () => {this.addSearchFeatures()});
+
+    // Unbolds searched words
+    let boldedWords = document.querySelectorAll("b");
+    boldedWords.forEach(word => {
+      word.parentNode.replaceChild(word.firstChild, word)
+    });
   }
 
   renderStars() {
@@ -177,7 +206,7 @@ class ReviewList extends React.Component {
       for (let i = 0; i < searchFeatures.length; i++) {
         searchFeatures[i].style.display = "none";
       }
-      categoryContainer[0].style.display = "block";
+      categoryContainer[0].style.display = "flex";
       showAllReviewsButton[0].style.display = "none";
     }
   }
@@ -264,6 +293,21 @@ class ReviewList extends React.Component {
         <button className="show-all-reviews" onClick={() => {this.handleClick()}}>Back to all reviews</button>
         <hr className="search-features"/> 
         <Review reviews={this.renderReviews()} />
+        <ReactPaginate
+          previousLabel={'<'}
+          nextLabel={'>'}
+          breakLabel={'...'}
+          breakClassName={'break-me'}
+          itemClass={'item'}
+          pageClassName={'page'}
+          pageCount={this.state.pageCount}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={3}
+          onPageChange={this.handlePageClick}
+          containerClassName={'pagination'}
+          subContainerClassName={'pages pagination'}
+          activeClassName={'active'}
+        />
       </div>
     );
   }
