@@ -8,11 +8,6 @@ const { getReviewsFromDatabase, getSearchResultsFromDatabase } = require('../dat
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '../public')));
 
-
-app.get('/', (req, res) => {
-  res.render('index');
-})
-
 app.get('/:id', (req, res) => {
   getReviewsFromDatabase(req.params.id, (err, data) => {
     if (err) {

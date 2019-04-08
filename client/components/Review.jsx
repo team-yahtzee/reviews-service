@@ -1,4 +1,4 @@
-import $ from 'jQuery';
+import Response from './Response.jsx';
 
 class Review extends React.Component {
   constructor(props) {
@@ -10,15 +10,14 @@ class Review extends React.Component {
 
     this.readMore = this.readMore.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.appendResponses = this.appendResponses.bind(this);
   }
 
   handleClick(i, text) {
     let review = document.getElementsByClassName(`read-more-${i}`);
     let lessText = review[0].innerText.slice(0, -13);
-    
-    return $(`.read-more-${i}`).replaceWith(lessText + text);
-    // causes error after clicking read more first and then searching for words
-    // return $(`.read-more-${i}`).slice(0, -3).append(text);
+
+    return review[0].innerText = lessText + text;
   }
 
   readMore(index, text) {
@@ -40,17 +39,24 @@ class Review extends React.Component {
     }
   }
 
-  
+  appendResponses() {
+    let reviews = this.props.reviews;
+    let owner = reviews[reviews.length - 1];
+    // console.log(owner)
+    if (Math.random() * reviews.length > reviews.length / 1.5) {
+      return <Response review={owner} />;
+    }
+  }
 
   render() {
     return (
       <div>
         {this.props.reviews.map((review, i) => {
           return (
-            <div key={review.text} className="review-container" >
+            <div key={review.text} className="review-container">
               <div className="header-container">
-                <div className="avatar">
-                  <img className="avatar-pic" src={`${review.avatar}`} />
+                <div>
+                  <img className="avatar" src={`${review.avatar}`}/>
                 </div>
                 <div className="name">
                   <div>{review.name}</div> 
@@ -61,6 +67,7 @@ class Review extends React.Component {
               </div>
               <div className="text">
                 <div className={`read-more-${i}`}>{this.readMore(i, review.text)}</div>
+                {this.appendResponses()}
               </div>
               <hr className="divider"/>
             </div>

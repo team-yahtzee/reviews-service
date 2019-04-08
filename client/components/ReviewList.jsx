@@ -33,12 +33,11 @@ class ReviewList extends React.Component {
         pageCount: Math.ceil(data.length / 7)
       });
     })
-    .catch(() => { 
-      console.error('Error retrieving reviews', err);
-    });
+    .catch((err) => { console.error('Error retrieving reviews', err) });
   }
 
   getReviews(id) {
+    // console.log(id)
     return axios({
      url: `/33`,
      method: 'get',
@@ -76,6 +75,7 @@ class ReviewList extends React.Component {
       this.addSearchFeatures();
       this.boldSearchedWord();
     })
+    .catch(err => { console.error(err) });
   }
     
   boldSearchedWord() {
@@ -180,7 +180,7 @@ class ReviewList extends React.Component {
         <hr/>
 
         {/* Render Stars */}
-        {this.state.reviews.length > 0 ? <RatingStars reviews={this.state.reviews} /> : <p>Waiting for reviews to populate</p>}
+        {this.state.reviews.length > 0 ? <RatingStars reviews={this.state.reviews} /> : <p style={{fontFamily: "Nunito"}}>Waiting for reviews to populate...</p>}
 
         <hr/>
 

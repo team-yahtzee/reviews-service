@@ -41,7 +41,6 @@ class RatingStars extends React.Component {
 
   renderStars() {
     let rating = this.state.rating;
-    console.log(rating)
 
     for (let i = 0; i < 5; i++) {
       let star = document.getElementById(`star${i}`);

@@ -29,16 +29,22 @@
   bottom: 66px;
 }
 
-.left-star-category-container {
-  position: relative;
-  left: 170px;
-  bottom: 24px;
-}
-
-.right-star-category-container {
+.right-star-category-container, .left-star-category-container {
   position: relative;
   left: 145px;
-  bottom: 24px;
+  bottom: 28px;
+}
+
+.rating-category-container {
+  position: relative;
+  font-family: Nunito, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  height: 80px;
+  color: #484848;
+  background-color: #fff;
+  display: flex;  
+  bottom: 20px;
 }
 
 #star0, #star1, #star2, #star3, #star4 {
@@ -48,19 +54,11 @@
 }
 
 .accuracy-category-star0, .accuracy-category-star1, .accuracy-category-star2, .accuracy-category-star3, .accuracy-category-star4, .communication-category-star0, .communication-category-star1, .communication-category-star2, .communication-category-star3, .communication-category-star4, .cleanliness-category-star0, .cleanliness-category-star1, .cleanliness-category-star2, .cleanliness-category-star3, .cleanliness-category-star4, .location-category-star0, .location-category-star1, .location-category-star2, .location-category-star3, .location-category-star4, .check-in-category-star0, .check-in-category-star1, .check-in-category-star2, .check-in-category-star3, .check-in-category-star4, .value-category-star0, .value-category-star1, .value-category-star2, .value-category-star3, .value-category-star4 {
+  position: relative;
+  top: 3px;
   padding-right: 6px;
-  width: 8%;
-  height: 8%;
-}
-
-.rating-category-container {
-  font-family: Nunito, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  height: 125px;
-  color: #484848;
-  background-color: #fff;
-  display: flex;  
+  width: 7%;
+  height: 7%;
 }
 
 .review-container {
@@ -92,7 +90,7 @@
   bottom: 42px;
 }
 
-.avatar-pic {
+.avatar {
   position: relative;
   width: 7%;
   height: 7%;
@@ -105,6 +103,43 @@
   font-size: 16px;
 }
 
+.response-avatar {
+  position: relative;
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  top: 15px;
+  left: 18px;
+}
+
+.response-name {
+  position: relative;
+  font-weight: 700 !important;
+  left: 68px;
+  bottom: 20px;
+  font-size: 16px;
+}
+
+.response-text {
+  position: relative;
+  left: 68px;
+  bottom: 18px;
+
+  font-size: 16px;
+}
+
+.response-date {
+  position: relative;
+  font-size: 15px;
+  left: 68px;
+  bottom: 8px;
+  color: #767676;
+}
+
+.response-container {
+  width: 512px;
+}
+
 .first-column {
   position: relative;
 }
@@ -115,12 +150,13 @@
 }
 
 .rating-category {
-  display: inline-block;
+  display: block;
+  height: 12px;
 }
 
 hr {
   display: block;
-  height: 1px;
+  /* height: 1px; */
   border: 0;
   border-top: 1px solid rgb(228, 228, 228);
   margin: 1em 0;
@@ -131,10 +167,8 @@ hr.divider {
   display: block;
   position: relative;
   bottom: 15px;
-  height: 1px;
-  border: 0;
   border-top: 1px solid rgb(228, 228, 228);
-  margin: 1em 0;
+  margin: 8px 0 12px 0 !important;
   padding: 0;
 }
 
@@ -150,6 +184,7 @@ hr.divider {
   background: url(./images/magnifying-glass.png) no-repeat scroll 9px 9px;
   background-size: 14px 14px;
   padding-left: 30px;
+  z-index: 1;
 }
 
 .show-all-reviews {
