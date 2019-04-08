@@ -12,17 +12,29 @@ class Review extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(text) {
-    return $(".read-more").append(text);
+  handleClick(i, text) {
+    let review = document.getElementsByClassName(`read-more-${i}`);
+    let lessText = review[0].innerText.slice(0, -13);
+    
+    return $(`.read-more-${i}`).replaceWith(lessText + text);
+    // causes error after clicking read more first and then searching for words
+    // return $(`.read-more-${i}`).slice(0, -3).append(text);
   }
 
-  readMore(text) {
+  readMore(index, text) {
     if (text.length > 280) {
-      const lessText = text.slice(0, 280);
-      const moreText = text.slice(280, text.length);
-      
-      return <React.Fragment>{lessText} <button className="read-more-button" onClick={() => this.handleClick(moreText)}>Read more</button></React.Fragment>
-
+      for (let i = 280; i > 0; i--) {
+        if (text[i + 1] === ' ') {
+          var lessText = text.slice(0, i + 1) + '...';
+          var moreText = text.slice(i + 1, text.length);
+          break;
+        } 
+      }
+      return (
+        <React.Fragment>
+          {lessText} <button className="read-more-button" onClick={() => this.handleClick(index, moreText)}>Read more</button>
+        </React.Fragment>
+      );
     } else {
       return text;
     }
@@ -48,7 +60,7 @@ class Review extends React.Component {
                 </div>
               </div>
               <div className="text">
-                <div className={`read-more-${i}`}>{this.readMore(review.text)}</div>
+                <div className={`read-more-${i}`}>{this.readMore(i, review.text)}</div>
               </div>
               <hr className="divider"/>
             </div>

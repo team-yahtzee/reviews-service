@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
   res.render('index');
 })
 
-app.get('/apartment/:id', (req, res) => {
+app.get('/:id', (req, res) => {
   getReviewsFromDatabase(req.params.id, (err, data) => {
     if (err) {
       console.error('Error retrieving reviews from database', err)
@@ -23,7 +23,7 @@ app.get('/apartment/:id', (req, res) => {
   });
 });
 
-app.get('/apartment/:id/search/:word', (req, res) => {
+app.get('/:id/search/:word', (req, res) => {
   getSearchResultsFromDatabase(req.params.id, req.params.word, (err, data) => {
     if (err) {
       console.error('Error retrieving reviews from database', err)
@@ -32,7 +32,6 @@ app.get('/apartment/:id/search/:word', (req, res) => {
     }
   });
 });
-
 
 
 app.post('/', (req, res) => {
