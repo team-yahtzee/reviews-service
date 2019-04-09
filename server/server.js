@@ -13,6 +13,10 @@ function getPaginatedItems(items, offset) {
   return items.slice(offset, offset + 7);
 }
 
+app.get('/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'))
+})
+
 // app.get('/:id', (req, res) => {
 //   getReviewsFromDatabase(req.params.id, (err, data) => {
 //     if (err) {
@@ -23,17 +27,7 @@ function getPaginatedItems(items, offset) {
 //   });
 // });
 
-app.get('/:id/search/:word', (req, res) => {
-  getSearchResultsFromDatabase(req.params.id, req.params.word, (err, data) => {
-    if (err) {
-      console.error('Error retrieving reviews from database', err)
-    } else {
-      res.json(data);
-    }
-  });
-});
-
-app.get('/:id', (req, res) => {
+app.get('/room/:id', (req, res) => {
   getReviewsFromDatabase(req.params.id, (err, data) => {
     if (err) {
       console.error('Error retrieving reviews from database', err);
@@ -60,19 +54,19 @@ app.get('/:id', (req, res) => {
   });
 });
 
+app.get('/:id/search/:word', (req, res) => {
+  getSearchResultsFromDatabase(req.params.id, req.params.word, (err, data) => {
+    if (err) {
+      console.error('Error retrieving reviews from database', err)
+    } else {
+      res.json(data);
+    }
+  });
+});
+
 app.post('/', (req, res) => {
   
 });
-
-
-
-
-
-
-
-
-
-
 
 
 app.listen(port, () => {

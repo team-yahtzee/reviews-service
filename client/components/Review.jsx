@@ -56,7 +56,7 @@ class Review extends React.Component {
       if (searchedReviews.length > 0) {
         return searchedReviews[i].date;
       }
-      return reviews[i].date;
+      return this.props.paginatedReviews[i].date;
     }
 
     if (reviews[i].has_response === 1) {

@@ -1,3 +1,4 @@
+import $ from 'jQuery';
 import React from 'react';
 import axios from 'axios';
 import Review from './Review.jsx';
@@ -28,18 +29,18 @@ class ReviewList extends React.Component {
   }
 
   componentDidMount() {
-    this.getReviews();
+    this.getReviews(window.location.pathname);
   }
   
   getReviews(id) {
-    // console.log(id)
     return axios({
-      url: `/33`,
+      url: `/room${id}`,
       method: 'get',
       params: { limit: 7, offset: this.state.offset } 
     })
     .then(({ data }) => {
       this.setState({
+        id: id,
         reviewCount: data.meta.total_count,
         reviews: data.data,
         paginatedReviews: data.comments,
@@ -85,7 +86,7 @@ class ReviewList extends React.Component {
   boldSearchedWord() {
     let { searchedReviews, searchedWord } = this.state;
     let regex = new RegExp(`(\\b)(${searchedWord})(\\b)`, 'gi');
-    // console.log(regex.ignoreCase)
+
     for (let i = 0; i < searchedReviews.length; i++) {
       let currentReview = document.getElementsByClassName(`read-more${i}`);
       if (searchedReviews[i].text.includes(searchedWord)) {
@@ -136,9 +137,31 @@ class ReviewList extends React.Component {
   handlePageClick(data) {
     let selected = data.selected;
     let offset = Math.ceil(selected * 7);
+    
+    this.setState({ offset: offset }, () => { this.getReviews(this.state.id) });
 
-    this.setState({ offset: offset }, () => { this.getReviews() });
-  };
+    $(document).ready(function(){
+      $( "a.scrollLink" ).click(function( event ) {
+          event.preventDefault();
+          $("html, body").animate({ scrollTop: $('#anchor').offset().top }, 1000);
+      });
+    });
+    // const scrollToTop = () => {
+    //   const c = document.documentElement.scrollTop || document.body.scrollTop;
+    //   if (c > 0) {
+    //     window.requestAnimationFrame(scrollToTop);
+    //     window.scrollTo(0, c - c / 8);
+    //   }
+    // };
+    // scrollToTop();
+  }
+
+  buildHref() {
+    var pageNumbers = document.getElementsByTagName('a');
+    for (let i = 0; i < pageNumbers.length; i++) {
+      pageNumbers[i].href = "anchor"
+    }
+  }
 
   addSearchFeatures() {
     let searchFeatures = document.getElementsByClassName("search-features");
@@ -180,11 +203,11 @@ class ReviewList extends React.Component {
 
         {/* Conditional Search Elements */}
         <div className="search-features">
-        {this.state.searchedReviews.length} {this.state.searchedReviews.length === 1 ? 'guest has mentioned' : 'guests have mentioned'}"<strong>{this.state.searchedWord}</strong>"
+        {this.state.searchedReviews.length} {this.state.searchedReviews.length === 1 ? 'guest has mentioned' : 'guests have mentioned'} "<strong>{this.state.searchedWord}</strong>"
         </div>
         <button className="show-all-reviews" onClick={() => {this.handleClick()}}>Back to all reviews</button>
 
-        <hr className="search-features"/> 
+        <hr id="anchor" className="search-features"/> 
 
         {/* Reviews */}
         <Review allReviews={this.state.reviews} paginatedReviews={this.sortReviews(this.state.paginatedReviews)} searchedReviews={this.sortReviews(this.state.searchedReviews)} />
@@ -200,6 +223,11 @@ class ReviewList extends React.Component {
           pageCount={this.state.pageCount}
           marginPagesDisplayed={1}
           pageRangeDisplayed={3}
+          hrefBuilder={this.buildHref}
+          pageLinkClassName={'scrollLink'}
+          previousLinkClassName={'scrollLink'}
+          nextLinkClassName={'scrollLink'}
+          disabledClassName={'disabledButtons'}
           onPageChange={this.handlePageClick}
           containerClassName={'pagination'}
           subContainerClassName={'pages pagination'}
