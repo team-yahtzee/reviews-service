@@ -13,36 +13,40 @@ class ReviewList extends React.Component {
       offset: 0,
       reviews: [],
       pageCount: 1,
+      reviewCount: 0,
       searchValue: '',
       allResults: true,
       searchedWord: '',
       searchedReviews: [],
+      paginatedReviews: []
     }
 
+    this.sortReviews = this.sortReviews.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.renderReviews = this.renderReviews.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
   }
 
   componentDidMount() {
-    this.getReviews()
-    .then(({ data }) => {
-      this.setState({
-        reviews: data,
-        pageCount: Math.ceil(data.length / 7)
-      });
-    })
-    .catch((err) => { console.error('Error retrieving reviews', err) });
+    this.getReviews();
   }
-
+  
   getReviews(id) {
     // console.log(id)
     return axios({
-     url: `/33`,
-     method: 'get',
-     data: { limit: 7, offset: this.state.offset } 
+      url: `/33`,
+      method: 'get',
+      params: { limit: 7, offset: this.state.offset } 
     })
+    .then(({ data }) => {
+      this.setState({
+        reviewCount: data.meta.total_count,
+        reviews: data.data,
+        paginatedReviews: data.comments,
+        pageCount: Math.ceil(data.meta.total_count / data.meta.limit)
+      });
+    })
+    .catch((err) => { console.error('Error retrieving reviews', err) });
   }
 
   sortReviews(dates) {
@@ -81,9 +85,9 @@ class ReviewList extends React.Component {
   boldSearchedWord() {
     let { searchedReviews, searchedWord } = this.state;
     let regex = new RegExp(`(\\b)(${searchedWord})(\\b)`, 'gi');
-    console.log(regex.ignoreCase)
+    // console.log(regex.ignoreCase)
     for (let i = 0; i < searchedReviews.length; i++) {
-      let currentReview = document.getElementsByClassName(`read-more-${i}`);
+      let currentReview = document.getElementsByClassName(`read-more${i}`);
       if (searchedReviews[i].text.includes(searchedWord)) {
         currentReview[0].innerHTML = searchedReviews[i].text.replace(regex, '$1<b>$2</b>$3');
       }
@@ -112,7 +116,8 @@ class ReviewList extends React.Component {
 
   handleClick() {
     this.setState({
-      allResults: true
+      allResults: true,
+      searchedReviews: []
     }, () => {this.addSearchFeatures()});
 
     // Unbolds searched words
@@ -129,13 +134,10 @@ class ReviewList extends React.Component {
   }
 
   handlePageClick(data) {
-    console.log('selected data', data)
     let selected = data.selected;
     let offset = Math.ceil(selected * 7);
 
-    this.setState({ offset: offset }, () => {
-      this.getReviews();
-    });
+    this.setState({ offset: offset }, () => { this.getReviews() });
   };
 
   addSearchFeatures() {
@@ -158,40 +160,34 @@ class ReviewList extends React.Component {
     }
   }
 
-  renderReviews() {
-    if (this.state.allResults === true) {
-      return this.sortReviews(this.state.reviews);
-    } else {
-      return this.sortReviews(this.state.searchedReviews);
-    }
-  }
-
   render() {
     return (
       <React.Fragment>
 
         {/* Total Reviews */}
-        <span className="total-reviews">{this.state.reviews.length} Reviews</span>
+        <span className="total-reviews">{this.state.reviewCount} Reviews</span>
 
         {/* Search */}
         <SearchForm value={this.state.searchValue} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} />
         <button className="clear-input" onClick={() => {this.handleClick()}}>&#x2715;</button>
 
-        <hr/>
+        <hr className="header-divider1"/>
 
         {/* Render Stars */}
         {this.state.reviews.length > 0 ? <RatingStars reviews={this.state.reviews} /> : <p style={{fontFamily: "Nunito"}}>Waiting for reviews to populate...</p>}
 
-        <hr/>
+        <hr className="header-divider2"/>
 
         {/* Conditional Search Elements */}
-        <div className="search-features">{this.state.searchedReviews.length} guests have mentioned "<strong>{this.state.searchedWord}</strong>"</div>
+        <div className="search-features">
+        {this.state.searchedReviews.length} {this.state.searchedReviews.length === 1 ? 'guest has mentioned' : 'guests have mentioned'}"<strong>{this.state.searchedWord}</strong>"
+        </div>
         <button className="show-all-reviews" onClick={() => {this.handleClick()}}>Back to all reviews</button>
 
         <hr className="search-features"/> 
 
         {/* Reviews */}
-        <Review reviews={this.renderReviews()} />
+        <Review allReviews={this.state.reviews} paginatedReviews={this.sortReviews(this.state.paginatedReviews)} searchedReviews={this.sortReviews(this.state.searchedReviews)} />
 
         {/* Page Numbers */}
         <ReactPaginate

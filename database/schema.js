@@ -15,15 +15,6 @@ module.exports.apartmentSchema = // 100
   PRIMARY KEY (id)
 );`
 
-
-module.exports.commentSchema = // 100
-`CREATE TABLE IF NOT EXISTS comments (
-  id INTEGER NOT NULL,
-  date VARCHAR(15) NULL DEFAULT NULL,
-  text VARCHAR (500) NULL DEFAULT NULL,
-  owner_id INTEGER(5),
-  PRIMARY KEY (id)
-);`
   
 module.exports.reviewSchema = // 1000
 `CREATE TABLE IF NOT EXISTS reviews (
@@ -33,6 +24,8 @@ module.exports.reviewSchema = // 1000
   rating DECIMAL(5) NULL DEFAULT NULL,
   user_id INTEGER(5) NULL DEFAULT NULL,
   apartment_id INTEGER(10),
+  has_response BINARY NULL DEFAULT NULL,
+  owner_response VARCHAR(500) NULL DEFAULT NULL,
   PRIMARY KEY (id)
 );`
 

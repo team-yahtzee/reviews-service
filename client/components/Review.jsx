@@ -5,16 +5,17 @@ class Review extends React.Component {
     super(props);
 
     this.state = {
-      show: true
+      show: true,
     }
 
     this.readMore = this.readMore.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.renderReviews = this.renderReviews.bind(this);
     this.appendResponses = this.appendResponses.bind(this);
   }
 
   handleClick(i, text) {
-    let review = document.getElementsByClassName(`read-more-${i}`);
+    let review = document.getElementsByClassName(`read-more${i}`);
     let lessText = review[0].innerText.slice(0, -13);
 
     return review[0].innerText = lessText + text;
@@ -39,19 +40,35 @@ class Review extends React.Component {
     }
   }
 
-  appendResponses() {
-    let reviews = this.props.reviews;
-    let owner = reviews[reviews.length - 1];
-    // console.log(owner)
-    if (Math.random() * reviews.length > reviews.length / 1.5) {
-      return <Response review={owner} />;
+  renderReviews() {
+    if (this.props.searchedReviews.length) {
+      return this.props.searchedReviews;
     }
+    return this.props.paginatedReviews;
   }
+
+  appendResponses(i) {
+    let reviews = this.props.allReviews;
+    let searchedReviews = this.props.searchedReviews;
+    let owner = reviews[reviews.length - 1];
+    let ownerResponse = reviews[i].owner_response;
+    let date = () => {
+      if (searchedReviews.length > 0) {
+        return searchedReviews[i].date;
+      }
+      return reviews[i].date;
+    }
+
+    if (reviews[i].has_response === 1) {
+      return <Response review={owner} response={ownerResponse} date={date()} />
+    }  
+  }
+
 
   render() {
     return (
       <div>
-        {this.props.reviews.map((review, i) => {
+        {this.renderReviews().map((review, i) => {
           return (
             <div key={review.text} className="review-container">
               <div className="header-container">
@@ -66,8 +83,12 @@ class Review extends React.Component {
                 </div>
               </div>
               <div className="text">
-                <div className={`read-more-${i}`}>{this.readMore(i, review.text)}</div>
-                {this.appendResponses()}
+                <div className={`read-more${i}`}>
+                  {this.readMore(i, review.text)}
+                </div>
+                <div className={`owner-response${i}`}>
+                  {this.appendResponses(i)}
+                </div>
               </div>
               <hr className="divider"/>
             </div>

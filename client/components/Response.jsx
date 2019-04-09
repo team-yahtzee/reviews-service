@@ -8,13 +8,13 @@ const Response = props => (
         <div>Response from {props.review.name}:</div>
       </div>
       <div className="response-text">
-        <div>{props.review.text}</div>
+        <div>{props.response}</div>
       </div>
       <div className="response-date">
-        <div>{props.review.date}</div>
+        <div>{props.date}</div>
       </div>
     </div>
   </React.Fragment>
-)
+);
 
 export default Response;

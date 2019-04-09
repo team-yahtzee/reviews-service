@@ -4,13 +4,13 @@ const path = require('path');
 const getReviewsFromDatabase = (id, callback) => {
   let db = new sqlite3.Database(path.join(__dirname, '../reviews.db'), err => {
     if (err) {
-      console.log(err)
+      console.error(err);
     } else {
-      db.all(`SELECT users.name, users.avatar, reviews.date, reviews.text, reviews.rating FROM users, reviews WHERE users.id = reviews.user_id AND reviews.apartment_id = ${id};`, [], (err, rows) => {  
+      db.all(`SELECT users.name, users.avatar, reviews.date, reviews.text, reviews.rating, reviews.has_response, reviews.owner_response FROM users, reviews WHERE users.id = reviews.user_id AND reviews.apartment_id = ${id};`, [], (err, rows) => {  
         if (err) {
-          console.log('Error querying database', err)
+          console.error('Error querying database', err);
         } else {
-          db.close(() => { callback(null, rows), console.log('Got reviews and closed database')})
+          db.close(() => { callback(null, rows), console.log('Got reviews and closed database')});
         }
       });
     }
@@ -20,13 +20,13 @@ const getReviewsFromDatabase = (id, callback) => {
 const getSearchResultsFromDatabase = (id, word, callback) => {
   let db = new sqlite3.Database(path.join(__dirname, '../reviews.db'), err => {
     if (err) {
-      console.log(err)
+      console.error(err);
     } else {
-      db.all(`SELECT users.name, users.avatar, reviews.date, reviews.text, reviews.rating FROM users, reviews WHERE users.id = reviews.user_id AND reviews.apartment_id = ${id} AND (reviews.text LIKE '%${word}%' OR reviews.text LIKE '% ${word}%');`, [], (err, rows) => {  
+      db.all(`SELECT users.name, users.avatar, reviews.date, reviews.text, reviews.rating, reviews.has_response, reviews.owner_response FROM users, reviews WHERE users.id = reviews.user_id AND reviews.apartment_id = ${id} AND (reviews.text LIKE '%${word}%' OR reviews.text LIKE '% ${word}%');`, [], (err, rows) => {  
         if (err) {
-          console.log('Error querying database', err)
+          console.error('Error querying database', err);
         } else {
-          db.close(() => { callback(null, rows), console.log('Got search results and closed database')})
+          db.close(() => { callback(null, rows), console.log('Got search results and closed database')});
         }
       });
     }
