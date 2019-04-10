@@ -11,6 +11,7 @@ class ReviewList extends React.Component {
     super(props);
   
     this.state = {
+      id: 0,
       offset: 0,
       reviews: [],
       pageCount: 1,
@@ -22,7 +23,6 @@ class ReviewList extends React.Component {
       paginatedReviews: []
     }
 
-    this.sortReviews = this.sortReviews.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
@@ -48,14 +48,6 @@ class ReviewList extends React.Component {
       });
     })
     .catch((err) => { console.error('Error retrieving reviews', err) });
-  }
-
-  sortReviews(dates) {
-    return dates.sort((a, b) => {
-      const dateA = new Date(a.date.replace(' ', ', '));
-      const dateB = new Date(b.date.replace(' ', ', '));
-      return dateB - dateA;
-    });
   }
 
   renderXButton() {
@@ -143,17 +135,9 @@ class ReviewList extends React.Component {
     $(document).ready(function(){
       $( "a.scrollLink" ).click(function( event ) {
           event.preventDefault();
-          $("html, body").animate({ scrollTop: $('#anchor').offset().top }, 1000);
+          $("html, body").animate({ scrollTop: $('#anchor').offset().top }, 500);
       });
     });
-    // const scrollToTop = () => {
-    //   const c = document.documentElement.scrollTop || document.body.scrollTop;
-    //   if (c > 0) {
-    //     window.requestAnimationFrame(scrollToTop);
-    //     window.scrollTo(0, c - c / 8);
-    //   }
-    // };
-    // scrollToTop();
   }
 
   buildHref() {
@@ -210,7 +194,7 @@ class ReviewList extends React.Component {
         <hr id="anchor" className="search-features"/> 
 
         {/* Reviews */}
-        <Review allReviews={this.state.reviews} paginatedReviews={this.sortReviews(this.state.paginatedReviews)} searchedReviews={this.sortReviews(this.state.searchedReviews)} />
+        <Review allReviews={this.state.reviews} paginatedReviews={this.state.paginatedReviews} searchedReviews={this.state.searchedReviews} />
 
         {/* Page Numbers */}
         <ReactPaginate
@@ -230,7 +214,6 @@ class ReviewList extends React.Component {
           disabledClassName={'disabledButtons'}
           onPageChange={this.handlePageClick}
           containerClassName={'pagination'}
-          subContainerClassName={'pages pagination'}
           activeClassName={'active'}
         />
       </React.Fragment>

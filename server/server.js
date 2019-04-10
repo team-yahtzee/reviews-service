@@ -9,30 +9,28 @@ const { getReviewsFromDatabase, getSearchResultsFromDatabase } = require('../dat
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '../public')));
 
-function getPaginatedItems(items, offset) {
+getPaginatedItems = (items, offset) => {
   return items.slice(offset, offset + 7);
+}
+
+sortReviews = dates => {
+  return dates.sort((a, b) => {
+    const dateA = new Date(a.date.replace(' ', ', '));
+    const dateB = new Date(b.date.replace(' ', ', '));
+    return dateB - dateA;
+  });
 }
 
 app.get('/:id', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
-// app.get('/:id', (req, res) => {
-//   getReviewsFromDatabase(req.params.id, (err, data) => {
-//     if (err) {
-//       console.error('Error retrieving reviews from database', err)
-//     } else {
-//       res.json(data);
-//     }
-//   });
-// });
-
 app.get('/room/:id', (req, res) => {
   getReviewsFromDatabase(req.params.id, (err, data) => {
     if (err) {
       console.error('Error retrieving reviews from database', err);
     } else {
-      let items = data;
+      let items = sortReviews(data);
       let offset = req.query.offset ? parseInt(req.query.offset) : 0;
       let nextOffset = offset + 7;
       let previousOffset = offset - 7 < 1 ? 0 : offset - 7;
@@ -59,7 +57,7 @@ app.get('/:id/search/:word', (req, res) => {
     if (err) {
       console.error('Error retrieving reviews from database', err)
     } else {
-      res.json(data);
+      res.json(sortReviews(data));
     }
   });
 });

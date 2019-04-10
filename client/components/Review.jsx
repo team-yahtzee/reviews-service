@@ -9,7 +9,6 @@ class Review extends React.Component {
     }
 
     this.readMore = this.readMore.bind(this);
-    this.handleClick = this.handleClick.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
     this.appendResponses = this.appendResponses.bind(this);
   }
@@ -50,16 +49,17 @@ class Review extends React.Component {
   appendResponses(i) {
     let reviews = this.props.allReviews;
     let searchedReviews = this.props.searchedReviews;
+    let paginatedReviews = this.props.paginatedReviews;
     let owner = reviews[reviews.length - 1];
     let ownerResponse = reviews[i].owner_response;
     let date = () => {
-      if (searchedReviews.length > 0) {
+      if (searchedReviews.length) {
         return searchedReviews[i].date;
       }
-      return this.props.paginatedReviews[i].date;
+      return paginatedReviews[i].date;
     }
 
-    if (reviews[i].has_response === 1) {
+    if (reviews[i].has_response) {
       return <Response review={owner} response={ownerResponse} date={date()} />
     }  
   }

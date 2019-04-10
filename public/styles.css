@@ -259,7 +259,7 @@ button.show-all-reviews:hover, button.read-more-button:hover {
   outline: none;
 }
 
-.pagination>li:last-child>a, .pagination>li:first-child>a {
+.pagination>li:first-child>a, .pagination>li:last-child>a {
   border-radius: 50%;
   text-decoration: none !important;
   border-color: #008489 !important;
@@ -275,6 +275,21 @@ button.show-all-reviews:hover, button.read-more-button:hover {
 .pagination>li.next>a {
   color: #008489;
   border-color: #008489 !important;
+}
+
+.pagination>li.previous>a:hover, .pagination>li.next>a:hover {
+  background-color: white !important;
+}
+
+a:not(.active) {
+  background-color: white !important;
+  border-color: white !important;
+}
+
+.pagination>li.break-me>a {
+  position: relative;
+  bottom: 4px;
+  pointer-events: none;
 }
 
 [role=button]:focus {
