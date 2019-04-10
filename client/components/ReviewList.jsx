@@ -135,7 +135,7 @@ class ReviewList extends React.Component {
     $(document).ready(function(){
       $( "a.scrollLink" ).click(function( event ) {
           event.preventDefault();
-          $("html, body").animate({ scrollTop: $('#anchor').offset().top }, 500);
+          $("html, body").animate({ scrollTop: $('#anchor').offset().top - 15 }, 500);
       });
     });
   }
@@ -183,7 +183,7 @@ class ReviewList extends React.Component {
         {/* Render Stars */}
         {this.state.reviews.length > 0 ? <RatingStars reviews={this.state.reviews} /> : <p style={{fontFamily: "Nunito"}}>Waiting for reviews to populate...</p>}
 
-        <hr className="header-divider2"/>
+        <hr id="anchor" className="header-divider2"/>
 
         {/* Conditional Search Elements */}
         <div className="search-features">
@@ -191,7 +191,7 @@ class ReviewList extends React.Component {
         </div>
         <button className="show-all-reviews" onClick={() => {this.handleClick()}}>Back to all reviews</button>
 
-        <hr id="anchor" className="search-features"/> 
+        <hr className="search-features"/> 
 
         {/* Reviews */}
         <Review allReviews={this.state.reviews} paginatedReviews={this.state.paginatedReviews} searchedReviews={this.state.searchedReviews} />
