@@ -69,4 +69,5 @@ app.post('/', (req, res) => {
 
 app.listen(port, () => {
   console.log(`server running at: http://localhost:${port}`);
+  console.log(`server running at: http://ec2-18-188-16-240.us-east-2.compute.amazonaws.com:${port}`);
 });

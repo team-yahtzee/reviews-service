@@ -39,7 +39,7 @@ db.serialize(() => {
   db.run(`DROP TABLE IF EXISTS reviews`);
   db.run(reviewSchema);
   const reviewStatement = db.prepare(reviewQuery);
-  for (let i = 0; i < 4000; i++) {
+  for (let i = 0; i < 10000; i++) {
     if (Math.random() > .5) {
       reviewStatement.run(
         faker.date.month() + ' ' + faker.random.number({ min: 2015, max: 2019}), 

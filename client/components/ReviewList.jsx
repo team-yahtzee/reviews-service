@@ -133,7 +133,7 @@ class ReviewList extends React.Component {
     this.setState({ offset: offset }, () => { this.getReviews(this.state.id) });
 
     $(document).ready(function(){
-      $( "a.scrollLink" ).click(function( event ) {
+      $( "a.scrollLink" ).click((event) => {
           event.preventDefault();
           $("html, body").animate({ scrollTop: $('#anchor').offset().top - 15 }, 500);
       });
@@ -141,7 +141,7 @@ class ReviewList extends React.Component {
   }
 
   buildHref() {
-    var pageNumbers = document.getElementsByTagName('a');
+    let pageNumbers = document.getElementsByTagName('a');
     for (let i = 0; i < pageNumbers.length; i++) {
       pageNumbers[i].href = "anchor"
     }
@@ -151,18 +151,17 @@ class ReviewList extends React.Component {
     let searchFeatures = document.getElementsByClassName("search-features");
     let categoryContainer = document.getElementsByClassName("rating-category-container");
     let showAllReviewsButton = document.getElementsByClassName("show-all-reviews");
-    
+
     if (this.state.allResults === false) {
-      for (let i = 0; i < searchFeatures.length; i++) {
-        searchFeatures[i].style.display = "block";
-      }
       categoryContainer[0].style.display = "none";
+      searchFeatures[0].style.display = "block";
+      searchFeatures[1].style.display = "block";
       showAllReviewsButton[0].style.display = "block";
     } else {
-      for (let i = 0; i < searchFeatures.length; i++) {
-        searchFeatures[i].style.display = "none";
-      }
+
       categoryContainer[0].style.display = "flex";
+      searchFeatures[0].style.display = "none";
+      searchFeatures[1].style.display = "none";
       showAllReviewsButton[0].style.display = "none";
     }
   }
