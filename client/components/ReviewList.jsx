@@ -61,7 +61,7 @@ class ReviewList extends React.Component {
   }
 
   getSearchResults(word) {
-    axios.get(`/33/search/${word}`)
+    axios.get(`http://localhost:3002/33/search/${word}`)
     .then(({ data }) => {
       this.setState({
         searchedReviews: data,

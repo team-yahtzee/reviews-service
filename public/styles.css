@@ -198,7 +198,15 @@ hr.divider {
   z-index: 1;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 .show-all-reviews {
+  color: #008489;
   display: none;
   position: relative;
   font-size: 14px;
@@ -252,8 +260,8 @@ button.show-all-reviews:hover, button.read-more-button:hover {
   outline: none;
 }
 
-.pagination>li:first-child>a, .pagination>li:last-child>a {
-  border-radius: 50%;
+.pagination>li.previous>a, .pagination>li.next>a {
+  border-radius: 50% !important;
   text-decoration: none !important;
   border-color: #008489 !important;
 }
