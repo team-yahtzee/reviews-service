@@ -7,7 +7,7 @@
   position: relative;
   font-size: 20px;
   top: 22px;
-  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif !important;
+  font-family: Roboto;
   font-size: 24px !important;
   font-weight: 800 !important;
   line-height: 1.25em !important;
@@ -24,9 +24,9 @@
 }
 
 #star-container {
-  position: relative;
-  left: 140px;
-  bottom: 50px;
+  /* position: relative; */
+  /* left: 136px;
+  bottom: 40px; */
 }
 
 .right-star-category-container, .left-star-category-container {
@@ -48,6 +48,9 @@
 }
 
 #star0, #star1, #star2, #star3, #star4 {
+  position: relative;
+  left: 144px;
+  bottom: 56px;
   padding-right: 6px;
   width: 4%;
   height: 4%;
@@ -215,9 +218,9 @@ input:focus {
 
 input::placeholder {
   position: relative;
-  font-family: Circular;
+  font-family: Roboto;
   font-size: 15px;
-  font-weight: 300;
+  font-weight: 500;
   top: 2px;
 }
 
@@ -237,16 +240,6 @@ button.show-all-reviews:focus, button.read-more-button:focus {
 
 button.show-all-reviews:hover, button.read-more-button:hover {
   text-decoration: underline;
-}
-
-@font-face {
-  font-family: 'Circular';
-  src: url('./fonts/circular-pro-book.TTF');
-}
-
-@font-face {
-  font-family: 'CircularBold';
-  src: url('./fonts/circular-pro-bold.TTF');
 }
 
 .clear-input {

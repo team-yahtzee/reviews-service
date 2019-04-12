@@ -23,7 +23,7 @@ db.serialize(() => {
   db.run(`DROP TABLE IF EXISTS users`);
   db.run(userSchema);
   const userStatement = db.prepare(userQuery);
-  for (let i = 0; i < 200; i++) {
+  for (let i = 0; i < 400; i++) {
     userStatement.run(faker.name.firstName(), faker.internet.avatar());
   }
 

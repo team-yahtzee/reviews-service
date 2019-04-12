@@ -2,12 +2,15 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const util = require('util');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3002;
 const { getReviewsFromDatabase, getSearchResultsFromDatabase } = require('../database/helper/helpers.js');
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '../public')));
+app.use(cors());
+
 
 getPaginatedItems = (items, offset) => {
   return items.slice(offset, offset + 7);
@@ -69,5 +72,5 @@ app.post('/', (req, res) => {
 
 app.listen(port, () => {
   console.log(`server running at: http://localhost:${port}`);
-  console.log(`server running at: http://ec2-18-188-16-240.us-east-2.compute.amazonaws.com:${port}`);
+  // console.log(`server running at: http://ec2-18-188-16-240.us-east-2.compute.amazonaws.com:${port}`);
 });

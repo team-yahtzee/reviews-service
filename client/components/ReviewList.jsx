@@ -1,4 +1,4 @@
-import $ from 'jQuery';
+import $ from 'jquery';
 import React from 'react';
 import axios from 'axios';
 import Review from './Review.jsx';
@@ -34,7 +34,7 @@ class ReviewList extends React.Component {
   
   getReviews(id) {
     return axios({
-      url: `/room${id}`,
+      url: `http://localhost:3002/room${id}`,
       method: 'get',
       params: { limit: 7, offset: this.state.offset } 
     })
