@@ -1,5 +1,5 @@
 #reviews {
-  max-width: 580px;
+  max-width: 620px;
   margin-left: 100px;
 }
 
@@ -21,12 +21,6 @@
   top: 8px;
   height: 6px;
   display: none;
-}
-
-#star-container {
-  /* position: relative; */
-  /* left: 136px;
-  bottom: 40px; */
 }
 
 .right-star-category-container, .left-star-category-container {
@@ -69,13 +63,11 @@
   font-family: Nunito, sans-serif;
   font-size: 14px;
   font-weight: 400;
-  line-height: 1.43;
   color: #484848;
   background-color: #fff;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  bottom: -10px;
 }
 
 .name {
@@ -141,6 +133,7 @@
 
 .response-container {
   width: 512px;
+  margin-top: 5px;
 }
 
 .first-column {
@@ -157,21 +150,12 @@
   height: 12px;
 }
 
-hr {
-  display: block;
-  /* height: 1px; */
-  border: 0;
-  border-top: 1px solid rgb(228, 228, 228);
-  margin: 1em 0;
-  padding: 0;
-}
-
-hr.divider {
+.divider {
   display: block;
   position: relative;
-  bottom: 15px;
+  bottom: 0px;
   border-top: 1px solid rgb(228, 228, 228);
-  margin: 8px 0 12px 0 !important;
+  margin: 0 0 20px 0 !important;
   padding: 0;
 }
 
@@ -198,10 +182,10 @@ hr.divider {
   z-index: 1;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+input.search-form:-webkit-autofill,
+input.search-form:-webkit-autofill:hover,
+input.search-form:-webkit-autofill:focus,
+input.search-form:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -219,12 +203,12 @@ input:-webkit-autofill:active {
   z-index: 2;
 }
 
-input:focus {
+input.search-form:focus {
   outline: none;
   border: 1px solid #008489;
 }
 
-input::placeholder {
+input.search-form::placeholder {
   position: relative;
   font-family: Roboto;
   font-size: 15px;
@@ -232,7 +216,7 @@ input::placeholder {
   top: 2px;
 }
 
-button {
+button.read-more-button, button.show-all-reviews, button.clear-input {
   background: none !important;
   color: #008489;
   border: none; 
@@ -282,12 +266,13 @@ button.show-all-reviews:hover, button.read-more-button:hover {
   background-color: white !important;
 }
 
-a:not(.active) {
+a.scrollLink:not(.active) {
   background-color: white !important;
   border-color: white !important;
 }
 
 .pagination>li.break-me>a {
+  border-color: white !important;
   position: relative;
   bottom: 4px;
   pointer-events: none;
