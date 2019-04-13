@@ -50,7 +50,6 @@ app.get('/room/:id', (req, res) => {
         data: data
       };
       return res.json(json);
-      // return res.json(data);
     }
   });
 });
@@ -65,12 +64,6 @@ app.get('/:id/search/:word', (req, res) => {
   });
 });
 
-app.post('/', (req, res) => {
-  
-});
-
-
 app.listen(port, () => {
-  // console.log(`server running at: http://localhost:${port}`);
-  console.log(`server running at: http://ec2-3-14-7-158.us-east-2.compute.amazonaws.com:${port}`);
+  console.log(`server running at: http://localhost:${port}`);
 });

@@ -34,7 +34,8 @@ class ReviewList extends React.Component {
   
   getReviews(id) {
     return axios({
-      url: `http://ec2-3-14-7-158.us-east-2.compute.amazonaws.com:3002/room${id}`,
+      url: `http://localhost:3002/room${id}`,
+      // url: `http://ec2-3-17-160-21.us-east-2.compute.amazonaws.com:3002/room${id}`,
       method: 'get',
       params: { limit: 7, offset: this.state.offset } 
     })
@@ -60,8 +61,9 @@ class ReviewList extends React.Component {
     }
   }
 
-  getSearchResults(word) {
-    axios.get(`http://ec2-3-14-7-158.us-east-2.compute.amazonaws.com:3002/33/search/${word}`)
+  getSearchResults(id, word) {
+    axios.get(`http://localhost:3002${id}/search/${word}`)
+    // axios.get(`http://ec2-3-17-160-21.us-east-2.compute.amazonaws.com:3002${id}/search/${word}`)
     .then(({ data }) => {
       this.setState({
         searchedReviews: data,
@@ -94,13 +96,14 @@ class ReviewList extends React.Component {
   }
 
   handleKeyPress(e) {
+    let id = this.state.id;
     let boldedWords = document.querySelectorAll("b");
     boldedWords.forEach(word => {
       word.parentNode.replaceChild(word.firstChild, word)
     });
 
     if (e.charCode === 13) {
-      this.getSearchResults(e.target.value);
+      this.getSearchResults(id, e.target.value);
       this.setState({
         searchedWord: e.target.value
       });
