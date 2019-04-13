@@ -1,6 +1,6 @@
 # airbnb-reviews
 
-<img src="https://media.giphy.com/media/htSamnRMQpKJnKLEYS/giphy.gif" height="80%" width="80%">
+<img src="https://giant.gfycat.com/RaggedAppropriateAmericanalligator.gif" height="80%" width="80%">
 
 airbnb-reviews is an implementation from scratch of the reviews component from any given Airbnb room rental page.  This component was built as a fullstack application utilizing Express and SQLite to store and serve data to the front-end component made with React.
 
