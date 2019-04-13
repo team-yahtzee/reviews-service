@@ -7,7 +7,7 @@ airbnb-reviews is an implementation from scratch of the reviews component from a
 # Related Projects
 airbnb-reviews was developed alongside a team of two other developers responsible for their own components.
 
-airbnb-host-neighborhood // Author: [Alan Zhao - Alan-Zhao-908](https://github.com/Alan-Zhao-908)
+airbnb-recommendations // Author: [Alan Zhao - Alan-Zhao-908](https://github.com/Alan-Zhao-908)
 
 airbnb-host-neighborhood // Author: [Kirill Chernik - kirillchernik8](https://github.com/kirillchernik8)
 
