@@ -1,13 +1,13 @@
 # airbnb-reviews
 
-My recreation of the Airbnb reviews section
+<img src="https://media.giphy.com/media/H1GhszDmoGGs0e1fcx/giphy.gif">
 
-![Airbnb Reviews Demo](https://media.giphy.com/media/H1GhszDmoGGs0e1fcx/giphy.gif)
 
-Airbnb-reviews is an implementation from scratch of the reviews component from any given Airbnb room rental page.  This component was built as a fullstack application utilizing Express and SQLite to store and serve data to the front-end component made with React.
+
+airbnb-reviews is an implementation from scratch of the reviews component from any given Airbnb room rental page.  This component was built as a fullstack application utilizing Express and SQLite to store and serve data to the front-end component made with React.
 
 # Related Projects
-airbnb-reviews was developed alongside a team of two other developers responsible for their own components
+airbnb-reviews was developed alongside a team of two other developers responsible for their own components.
 
 airbnb-host-neighborhood // Author: [Alan Zhao - Alan-Zhao-908](https://github.com/Alan-Zhao-908)
 
