@@ -28,3 +28,7 @@ node database/dataGenerator.js
 
 # Run the server locally
 node server/server.js
+
+# To view the component (works for endpoints from 1 - 100)
+localhost:3002/1
+```

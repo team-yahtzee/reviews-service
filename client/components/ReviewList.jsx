@@ -29,12 +29,12 @@ class ReviewList extends React.Component {
   }
 
   componentDidMount() {
-    this.getReviews(window.location.pathname);
+    this.getReviews(window.location.pathname.substring(1));
   }
   
   getReviews(id) {
     return axios({
-      url: `http://localhost:3002/room${id}`,
+      url: `http://localhost:3002/room/${id}`,
       // url: `http://ec2-3-17-160-21.us-east-2.compute.amazonaws.com:3002/room${id}`,
       method: 'get',
       params: { limit: 7, offset: this.state.offset } 
@@ -62,7 +62,7 @@ class ReviewList extends React.Component {
   }
 
   getSearchResults(id, word) {
-    axios.get(`http://localhost:3002${id}/search/${word}`)
+    axios.get(`http://localhost:3002/${id}/search/${word}`)
     // axios.get(`http://ec2-3-17-160-21.us-east-2.compute.amazonaws.com:3002${id}/search/${word}`)
     .then(({ data }) => {
       this.setState({
@@ -96,14 +96,13 @@ class ReviewList extends React.Component {
   }
 
   handleKeyPress(e) {
-    let id = this.state.id;
     let boldedWords = document.querySelectorAll("b");
     boldedWords.forEach(word => {
       word.parentNode.replaceChild(word.firstChild, word)
     });
 
     if (e.charCode === 13) {
-      this.getSearchResults(id, e.target.value);
+      this.getSearchResults(this.state.id, e.target.value);
       this.setState({
         searchedWord: e.target.value
       });

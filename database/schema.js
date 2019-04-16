@@ -1,4 +1,4 @@
-module.exports.userSchema = // 200
+module.exports.userSchema =
 `CREATE TABLE IF NOT EXISTS users (
   id INTEGER NOT NULL,
   name VARCHAR(50) NULL DEFAULT NULL,
@@ -7,7 +7,7 @@ module.exports.userSchema = // 200
 );`
 
 
-module.exports.apartmentSchema = // 100
+module.exports.apartmentSchema =
 `CREATE TABLE IF NOT EXISTS apartments (
   id INTEGER NOT NULL,
   address VARCHAR(100) NULL DEFAULT NULL,
@@ -16,7 +16,7 @@ module.exports.apartmentSchema = // 100
 );`
 
   
-module.exports.reviewSchema = // 1000
+module.exports.reviewSchema =
 `CREATE TABLE IF NOT EXISTS reviews (
   id INTEGER NOT NULL,
   date VARCHAR(15) NULL DEFAULT NULL,

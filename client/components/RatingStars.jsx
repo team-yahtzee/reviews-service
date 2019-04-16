@@ -40,7 +40,7 @@ class RatingStars extends React.Component {
   }
 
   renderStars() {
-    let rating = this.state.rating;
+    let { rating } = this.state;
 
     for (let i = 0; i < 5; i++) {
       let star = document.getElementById(`star${i}`);
@@ -65,7 +65,7 @@ class RatingStars extends React.Component {
   }
 
   renderCategoryStars() {
-    let categories = this.state.categories;
+    let { categories } = this.state;
 
     for (let i = 0; i < categories.length; i++) {
       for (let j = 0; j < 5; j++) {
