@@ -1,10 +1,8 @@
-import $ from 'jquery';
 import React from 'react';
 import axios from 'axios';
 import Review from './Review.jsx';
-import SearchForm from './SearchForm.jsx';
-import RatingStars from './RatingStars.jsx';
-import ReactPaginate from 'react-paginate';
+import Header from './Header.jsx';
+import Pagination from './Pagination.jsx';
 
 class ReviewList extends React.Component {
   constructor(props) {
@@ -23,9 +21,11 @@ class ReviewList extends React.Component {
       paginatedReviews: []
     }
 
+    this.setOffset = this.setOffset.bind(this);
+    this.getReviews = this.getReviews.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
   componentDidMount() {
@@ -128,25 +128,8 @@ class ReviewList extends React.Component {
     clearInputButton[0].style.display = "none";
   }
 
-  handlePageClick(data) {
-    let selected = data.selected;
-    let offset = Math.ceil(selected * 7);
-    
+  setOffset(offset) {
     this.setState({ offset: offset }, () => { this.getReviews(this.state.id) });
-
-    $(document).ready(function(){
-      $( "a.scrollLink" ).click((event) => {
-          event.preventDefault();
-          $("html, body").animate({ scrollTop: $('#anchor').offset().top - 15 }, 500);
-      });
-    });
-  }
-
-  buildHref() {
-    let pageNumbers = document.getElementsByTagName('a');
-    for (let i = 0; i < pageNumbers.length; i++) {
-      pageNumbers[i].href = "anchor"
-    }
   }
 
   addSearchFeatures() {
@@ -160,7 +143,6 @@ class ReviewList extends React.Component {
       searchFeatures[1].style.display = "block";
       showAllReviewsButton[0].style.display = "block";
     } else {
-
       categoryContainer[0].style.display = "flex";
       searchFeatures[0].style.display = "none";
       searchFeatures[1].style.display = "none";
@@ -171,52 +153,11 @@ class ReviewList extends React.Component {
   render() {
     return (
       <React.Fragment>
+        <Header reviewCount={this.state.reviewCount} searchValue={this.state.searchValue} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} handleClick={this.handleClick} reviews={this.state.reviews} searchedReviews={this.state.searchedReviews} searchedWord={this.state.searchedWord} />
 
-        {/* Total Reviews */}
-        <span className="total-reviews">{this.state.reviewCount} Reviews</span>
-
-        {/* Search */}
-        <SearchForm value={this.state.searchValue} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} />
-        <button className="clear-input" onClick={() => {this.handleClick()}}>&#x2715;</button>
-
-        <hr className="header-divider1"/>
-
-        {/* Render Stars */}
-        {this.state.reviews.length > 0 ? <RatingStars reviews={this.state.reviews} /> : <p style={{fontFamily: "Nunito"}}>Waiting for reviews to populate...</p>}
-
-        <hr id="anchor" className="header-divider2"/>
-
-        {/* Conditional Search Elements */}
-        <div className="search-features">
-        {this.state.searchedReviews.length} {this.state.searchedReviews.length === 1 ? 'guest has mentioned' : 'guests have mentioned'} "<strong>{this.state.searchedWord}</strong>"
-        </div>
-        <button className="show-all-reviews" onClick={() => {this.handleClick()}}>Back to all reviews</button>
-
-        <hr className="search-features"/> 
-
-        {/* Reviews */}
         <Review allReviews={this.state.reviews} paginatedReviews={this.state.paginatedReviews} searchedReviews={this.state.searchedReviews} />
 
-        {/* Page Numbers */}
-        <ReactPaginate
-          previousLabel={'<'}
-          nextLabel={'>'}
-          breakLabel={'...'}
-          breakClassName={'break-me'}
-          itemClass={'item'}
-          pageClassName={'page'}
-          pageCount={this.state.pageCount}
-          marginPagesDisplayed={1}
-          pageRangeDisplayed={3}
-          hrefBuilder={this.buildHref}
-          pageLinkClassName={'scrollLink'}
-          previousLinkClassName={'scrollLink'}
-          nextLinkClassName={'scrollLink'}
-          disabledClassName={'disabledButtons'}
-          onPageChange={this.handlePageClick}
-          containerClassName={'pagination'}
-          activeClassName={'active'}
-        />
+        <Pagination pageCount={this.state.pageCount} id={this.state.id} getReviews={this.getReviews} setOffset={this.setOffset} />
       </React.Fragment>
     );
   }

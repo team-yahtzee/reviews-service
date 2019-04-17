@@ -23,11 +23,8 @@ After cloning the repo to your machine and moving into the root directory:
 # Install dependencies
 npm install
 
-# Run database seeder
-node database/dataGenerator.js
-
 # Run the server locally
-node server/server.js
+npm start
 
 # To view the component (works for endpoints from 1 - 100)
 localhost:3002/1
