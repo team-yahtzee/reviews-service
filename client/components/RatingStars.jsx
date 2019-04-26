@@ -18,14 +18,8 @@ class RatingStars extends React.Component {
   }
 
   calculateRating(reviews) {
-    let total = 0;
-    let average;
-    
-    for (let i = 0; i < reviews.length; i++) {
-      total += reviews[i].rating;
-    }
-
-    average = total / reviews.length;
+    let total = reviews.reduce((acc, curr) => acc + curr.rating, 0);
+    let average = total / reviews.length;
     let firstDigit = Number(average.toString()[0]);
 
     if (.5 - (average - firstDigit) > -.25 && .5 - (average - firstDigit) <= .25) {

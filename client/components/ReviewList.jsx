@@ -15,8 +15,8 @@ class ReviewList extends React.Component {
       pageCount: 1,
       reviewCount: 0,
       searchValue: '',
-      allResults: true,
       searchedWord: '',
+      allResults: true,
       searchedReviews: [],
       paginatedReviews: []
     }
@@ -98,7 +98,7 @@ class ReviewList extends React.Component {
   handleKeyPress(e) {
     let boldedWords = document.querySelectorAll("b");
     boldedWords.forEach(word => {
-      word.parentNode.replaceChild(word.firstChild, word)
+      word.parentNode.replaceChild(word.firstChild, word);
     });
 
     if (e.charCode === 13) {
@@ -113,12 +113,12 @@ class ReviewList extends React.Component {
     this.setState({
       allResults: true,
       searchedReviews: []
-    }, () => {this.addSearchFeatures()});
+    }, () => { this.addSearchFeatures() });
 
     // Unbolds searched words
     let boldedWords = document.querySelectorAll("b");
     boldedWords.forEach(word => {
-      word.parentNode.replaceChild(word.firstChild, word)
+      word.parentNode.replaceChild(word.firstChild, word);
     });
 
     // Clears input form

@@ -5,24 +5,12 @@ const util = require('util');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3002;
+const { sortReviews, getPaginatedItems } = require('./helpers.js');
 const { getReviewsFromDatabase, getSearchResultsFromDatabase } = require('../database/helper/helpers.js');
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(cors());
-
-
-getPaginatedItems = (items, offset) => {
-  return items.slice(offset, offset + 7);
-}
-
-sortReviews = dates => {
-  return dates.sort((a, b) => {
-    const dateA = new Date(a.date.replace(' ', ', '));
-    const dateB = new Date(b.date.replace(' ', ', '));
-    return dateB - dateA;
-  });
-}
 
 app.get('/:id', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'))
@@ -31,7 +19,7 @@ app.get('/:id', (req, res) => {
 app.get('/room/:id', (req, res) => {
   getReviewsFromDatabase(req.params.id, (err, data) => {
     if (err) {
-      console.error('Error retrieving reviews from database', err);
+      console.error('Error retrieving all reviews from database', err);
     } else {
       let items = sortReviews(data);
       let offset = req.query.offset ? parseInt(req.query.offset) : 0;
@@ -49,7 +37,7 @@ app.get('/room/:id', (req, res) => {
         comments: getPaginatedItems(items, offset),
         data: data
       };
-      return res.json(json);
+      return res.send(json);
     }
   });
 });
@@ -57,13 +45,13 @@ app.get('/room/:id', (req, res) => {
 app.get('/:id/search/:word', (req, res) => {
   getSearchResultsFromDatabase(req.params.id, req.params.word, (err, data) => {
     if (err) {
-      console.error('Error retrieving reviews from database', err)
+      console.error('Error retrieving searched reviews from database', err)
     } else {
-      res.json(sortReviews(data));
+      res.send(sortReviews(data));
     }
   });
 });
 
 app.listen(port, () => {
-  console.log(`server running at: http://localhost:${port}`);
+  console.log(`Server running on port: ${port}`);
 });

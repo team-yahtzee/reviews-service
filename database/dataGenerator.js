@@ -31,8 +31,8 @@ db.serialize(() => {
   db.run(`DROP TABLE IF EXISTS apartments`);
   db.run(apartmentSchema);
   const apartmentStatement = db.prepare(apartmentQuery);
-  for (let i = 1; i < 101; i++) {
-    apartmentStatement.run(apartmentAddresses[i], i);
+  for (let i = 0; i < 100; i++) {
+    apartmentStatement.run(apartmentAddresses[i], i + 1);
   }
 
 
