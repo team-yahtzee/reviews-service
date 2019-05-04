@@ -1,3 +1,4 @@
+import React from 'react';
 import SearchForm from './SearchForm.jsx';
 import RatingStars from './RatingStars.jsx';
 

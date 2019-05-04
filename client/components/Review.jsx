@@ -1,3 +1,4 @@
+import React from 'react';
 import Response from './Response.jsx';
 
 class Review extends React.Component {

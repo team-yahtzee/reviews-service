@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import React from 'react';
 import ReactPaginate from 'react-paginate';
 
 class Pagination extends React.Component {
