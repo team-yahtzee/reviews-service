@@ -21,6 +21,7 @@ app.get('/room/:id', (req, res) => {
     if (err) {
       console.error('Error retrieving all reviews from database', err);
     } else {
+      console.log(data[0]);
       let items = sortReviews(data);
       let offset = req.query.offset ? parseInt(req.query.offset) : 0;
       let nextOffset = offset + 7;
