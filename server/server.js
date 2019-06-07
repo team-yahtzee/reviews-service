@@ -6,7 +6,8 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3002;
 const { sortReviews, getPaginatedItems } = require('./helpers.js');
-const { getReviewsFromDatabase, getSearchResultsFromDatabase } = require('../database/helper/helpers.js');
+// const { getReviewsFromDatabase, getSearchResultsFromDatabase } = require('../database/helper/helpers.js');
+const { getReviewsFromDatabase, getSearchResultsFromDatabase } = require('../database-mysql/models/model.js');
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '../public')));
@@ -21,7 +22,6 @@ app.get('/room/:id', (req, res) => {
     if (err) {
       console.error('Error retrieving all reviews from database', err);
     } else {
-      console.log(data[0]);
       let items = sortReviews(data);
       let offset = req.query.offset ? parseInt(req.query.offset) : 0;
       let nextOffset = offset + 7;
@@ -46,7 +46,7 @@ app.get('/room/:id', (req, res) => {
 app.get('/:id/search/:word', (req, res) => {
   getSearchResultsFromDatabase(req.params.id, req.params.word, (err, data) => {
     if (err) {
-      console.error('Error retrieving searched reviews from database', err)
+      console.error('Error retrieving searched reviews from database', err);
     } else {
       res.send(sortReviews(data));
     }

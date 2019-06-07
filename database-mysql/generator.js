@@ -1,121 +1,316 @@
-var db = require('./db/index.js');
+var mysql = require('mysql');
 var { promisify } = require('util');
 var path = require('path');
+var { pool } = require('./db/index.js');
 var faker = require('faker');
 var { apartmentAddresses } = require('./address.js');
 
-var generateUserData = function() {
-  var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-  var inserts = [];
-  for (var i = 0; i < 100000; i++) {
-    var values = [faker.name.firstName(), faker.internet.avatar()];
-    inserts.push(values);
+pool.getConnection(function(err, connection) {
+  if (err) {
+    console.error("Database connection error: ", err.stack);
+  } else {
+    console.log("Connected to database.");
   }
-  db.query(userQuery, [inserts], function(err, results) {
-    if (err) return console.error(err.message);
-    console.log("Rows inserted: ", results.affectedRows);
-  });
-  db.end();
-}
 
-/** Asynchronous Solution
-***/
-var generateUserDataAsync = function() {
-  return new Promise(function(resolve, reject) {
-    var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+  var maxRecordsSize = 100000;
+  var times = 6;
+  var records = maxRecordsSize / (3 * times);
+  
+  var generateReviewValues = function() {
     var inserts = [];
-    for (var i = 0; i < 100000; i++) {
-      var values = [faker.name.firstName(), faker.internet.avatar()];
-      inserts.push(values);
-    }
-    db.query(userQuery, [inserts], function(err, results) {
-      if (err) {
-        reject(new Error("something broke!", err));
+    for (var i = 0; i < records; i++) {
+      if (Math.random() > .5) {
+        values = [
+          faker.date.month() + ' ' + faker.random.number({ min: 2015, max: 2019}), 
+          faker.lorem.sentences(Math.ceil(Math.random() * 6)), 
+          Math.floor((() => Math.random() * 5)()) + .5,
+          faker.random.number({
+            min: 1,
+            max: 200
+          }),
+          faker.random.number({
+            min: 1,
+            max: 100
+          }),
+          Math.random() > .66,
+          faker.lorem.sentences(Math.ceil(Math.random() * 4))
+        ];
+        inserts.push(values);
       } else {
-        console.log("Rows inserted: ", results.affectedRows);
-        resolve();
+        values = [
+          faker.date.month() + ' ' + faker.random.number({ min: 2015, max: 2019}), 
+          faker.lorem.sentences(Math.ceil(Math.random() * 6)), 
+          Math.floor((() => Math.random() * 5)()) + 1,
+          faker.random.number({
+            min: 1,
+            max: 200
+          }),
+          faker.random.number({
+            min: 1,
+            max: 100
+          }),
+          Math.random() > .66,
+          faker.lorem.sentences(Math.ceil(Math.random() * 4))
+        ];
+        inserts.push(values);
       }
-    })
-  })
-}
+    }
+    return inserts;
+  }
 
-generateUserDataAsync()
-.then(function() {
-  console.log("Async success!");
-  generateUserData();
-  // db.end();
-})
-.catch(function(err) {
-  console.error(err);
-  db.end();
+  while (times > 0) {
+    var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+    var reviewInserts = generateReviewValues();
+    pool.query(reviewQuery, [reviewInserts], function(error, results) {
+    if (error) return console.error(error);
+    console.log("Rows inserted:", results.affectedRows);
+
+      var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+      var apartmentInserts = [];
+      for (var i = 0; i < records; i++) {
+        var values = [apartmentAddresses[i], i + 1];
+        apartmentInserts.push(values);
+      }
+      pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+        if (error) return console.error(error.message);
+        console.log("Rows inserted:", results.affectedRows);
+        
+        var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+        var usersInserts = [];
+        for (var i = 0; i < records; i++) {
+          var values = [faker.name.firstName(), faker.internet.avatar()];
+          usersInserts.push(values);
+        }
+        pool.query(userQuery, [usersInserts], function(err, results) {
+          if (err) return console.error(err.message);
+          console.log("Rows inserted: ", results.affectedRows);                
+        });
+      });
+    });
+    times -= 1;
+  }
+
+  connection.release();
+
+  // var generateReviewData = function() {
+  //   var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+  //   var reviewInserts = generateReviewValues();
+  //   pool.query(reviewQuery, [reviewInserts], function(error, results) {
+  //     if (error) return console.error(error);
+  //     console.log("Rows inserted:", results.affectedRows);
+
+  //   // apartments query
+  //     var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+  //     var apartmentInserts = [];
+  //     for (var i = 0; i < records; i++) {
+  //       var values = [apartmentAddresses[i], i + 1];
+  //       apartmentInserts.push(values);
+  //     }
+  //     pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+  //       if (error) return console.error(error.message);
+  //       console.log("Rows inserted:", results.affectedRows);
+        
+  //       // users query
+  //       var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+  //       var usersInserts = [];
+  //       for (var i = 0; i < records; i++) {
+  //         var values = [faker.name.firstName(), faker.internet.avatar()];
+  //         usersInserts.push(values);
+  //       }
+  //       pool.query(userQuery, [usersInserts], function(err, results) {
+  //         if (err) return console.error(err.message);
+  //         console.log("Rows inserted: ", results.affectedRows);
+          
+  //         // repeat once
+  //           var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+  //           var reviewInserts = generateReviewValues();
+  //           pool.query(reviewQuery, [reviewInserts], function(error, results) {
+  //           if (error) return console.error(error);
+  //           console.log("Rows inserted:", results.affectedRows);
+      
+  //         // apartments query
+  //           var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+  //           var apartmentInserts = [];
+  //           for (var i = 0; i < records; i++) {
+  //             var values = [apartmentAddresses[i], i + 1];
+  //             apartmentInserts.push(values);
+  //           }
+  //           pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+  //             if (error) return console.error(error.message);
+  //             console.log("Rows inserted:", results.affectedRows);
+              
+  //             // users query
+  //             var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+  //             var usersInserts = [];
+  //             for (var i = 0; i < records; i++) {
+  //               var values = [faker.name.firstName(), faker.internet.avatar()];
+  //               usersInserts.push(values);
+  //             }
+  //             pool.query(userQuery, [usersInserts], function(err, results) {
+  //               if (err) return console.error(err.message);
+  //               console.log("Rows inserted: ", results.affectedRows);
+
+  //               // repeat twice
+  //               var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+  //               var reviewInserts = generateReviewValues();
+  //               pool.query(reviewQuery, [reviewInserts], function(error, results) {
+  //               if (error) return console.error(error);
+  //               console.log("Rows inserted:", results.affectedRows);
+          
+  //               // apartments query
+  //                 var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+  //                 var apartmentInserts = [];
+  //                 for (var i = 0; i < records; i++) {
+  //                   var values = [apartmentAddresses[i], i + 1];
+  //                   apartmentInserts.push(values);
+  //                 }
+  //                 pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+  //                   if (error) return console.error(error.message);
+  //                   console.log("Rows inserted:", results.affectedRows);
+                    
+  //                   // users query
+  //                   var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+  //                   var usersInserts = [];
+  //                   for (var i = 0; i < records; i++) {
+  //                     var values = [faker.name.firstName(), faker.internet.avatar()];
+  //                     usersInserts.push(values);
+  //                   }
+  //                   pool.query(userQuery, [usersInserts], function(err, results) {
+  //                     if (err) return console.error(err.message);
+  //                     console.log("Rows inserted: ", results.affectedRows);
+
+  //                     // repeat third time
+  //                     var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+  //                     var reviewInserts = generateReviewValues();
+  //                     pool.query(reviewQuery, [reviewInserts], function(error, results) {
+  //                     if (error) return console.error(error);
+  //                     console.log("Rows inserted:", results.affectedRows);
+                
+  //                     // apartments query
+  //                       var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+  //                       var apartmentInserts = [];
+  //                       for (var i = 0; i < records; i++) {
+  //                         var values = [apartmentAddresses[i], i + 1];
+  //                         apartmentInserts.push(values);
+  //                       }
+  //                       pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+  //                         if (error) return console.error(error.message);
+  //                         console.log("Rows inserted:", results.affectedRows);
+                          
+  //                         // users query
+  //                         var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+  //                         var usersInserts = [];
+  //                         for (var i = 0; i < records; i++) {
+  //                           var values = [faker.name.firstName(), faker.internet.avatar()];
+  //                           usersInserts.push(values);
+  //                         }
+  //                         pool.query(userQuery, [usersInserts], function(err, results) {
+  //                           if (err) return console.error(err.message);
+  //                           console.log("Rows inserted: ", results.affectedRows);
+
+  //                           // repeat fourth time
+  //                           var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+  //                           var reviewInserts = generateReviewValues();
+  //                           pool.query(reviewQuery, [reviewInserts], function(error, results) {
+  //                           if (error) return console.error(error);
+  //                           console.log("Rows inserted:", results.affectedRows);
+                      
+  //                           // apartments query
+  //                             var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+  //                             var apartmentInserts = [];
+  //                             for (var i = 0; i < records; i++) {
+  //                               var values = [apartmentAddresses[i], i + 1];
+  //                               apartmentInserts.push(values);
+  //                             }
+  //                             pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+  //                               if (error) return console.error(error.message);
+  //                               console.log("Rows inserted:", results.affectedRows);
+                                
+  //                               // users query
+  //                               var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+  //                               var usersInserts = [];
+  //                               for (var i = 0; i < records; i++) {
+  //                                 var values = [faker.name.firstName(), faker.internet.avatar()];
+  //                                 usersInserts.push(values);
+  //                               }
+  //                               pool.query(userQuery, [usersInserts], function(err, results) {
+  //                                 if (err) return console.error(err.message);
+  //                                 console.log("Rows inserted: ", results.affectedRows);
+
+  //                                 // repeat fourth time
+  //                                 var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+  //                                 var reviewInserts = generateReviewValues();
+  //                                 pool.query(reviewQuery, [reviewInserts], function(error, results) {
+  //                                 if (error) return console.error(error);
+  //                                 console.log("Rows inserted:", results.affectedRows);
+                            
+  //                                 // apartments query
+  //                                   var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+  //                                   var apartmentInserts = [];
+  //                                   for (var i = 0; i < records; i++) {
+  //                                     var values = [apartmentAddresses[i], i + 1];
+  //                                     apartmentInserts.push(values);
+  //                                   }
+  //                                   pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+  //                                     if (error) return console.error(error.message);
+  //                                     console.log("Rows inserted:", results.affectedRows);
+                                      
+  //                                     // users query
+  //                                     var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+  //                                     var usersInserts = [];
+  //                                     for (var i = 0; i < records; i++) {
+  //                                       var values = [faker.name.firstName(), faker.internet.avatar()];
+  //                                       usersInserts.push(values);
+  //                                     }
+  //                                     pool.query(userQuery, [usersInserts], function(err, results) {
+  //                                       if (err) return console.error(err.message);
+  //                                       console.log("Rows inserted: ", results.affectedRows);                
+  //                                     });
+  //                                   });
+  //                                 });
+  //                                 //repeat ends
+
+
+  //                               });
+  //                             });
+  //                           });
+  //                           //repeat ends
+
+
+  //                         });
+  //                       });
+  //                     });
+  //                     //repeat ends
+
+
+  //                   });
+  //                 });
+  //               });
+  //               //repeat ends
+
+
+  //             });
+  //           });
+  //         });
+  //         //repeat ends
+
+
+  //       });
+  //     });
+  //   });
+  // }
+
+  // generateReviewData();
 });
 
-var generateApartmentData = function() {
-  var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES (?, ?)`
-  for (var i = 0; i < 333000; i++) {
-    var inserts = [apartmentAddresses[i], i + 1];
-    db.query(apartmentQuery, inserts, function(error, results) {
-      if (error) throw error;
-    });
+pool.end(function(err) {
+  if (err) {
+    return console.error(err.message);
+  } else {
+    console.log("Closed all connections");
   }
-}
+});
 
-var generateReviewData = function() {
-  var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES (?, ?, ?, ?, ?, ?, ?)`
-  var inserts = [];
-  for (var i = 0; i < 333000; i++) {
-    if (Math.random() > .5) {
-      inserts = [
-        faker.date.month() + ' ' + faker.random.number({ min: 2015, max: 2019}), 
-        faker.lorem.sentences(Math.ceil(Math.random() * 6)), 
-        Math.floor((() => Math.random() * 5)()) + .5,
-        faker.random.number({
-          min: 1,
-          max: 200
-        }),
-        faker.random.number({
-          min: 1,
-          max: 100
-        }),
-        Math.random() > .66,
-        faker.lorem.sentences(Math.ceil(Math.random() * 4))
-      ];
-      db.query(reviewQuery, inserts, function(error, results) {
-        if (error) throw error;
-      });
-    } else {
-      inserts = [
-        faker.date.month() + ' ' + faker.random.number({ min: 2015, max: 2019}), 
-        faker.lorem.sentences(Math.ceil(Math.random() * 6)), 
-        Math.floor((() => Math.random() * 5)()) + 1,
-        faker.random.number({
-          min: 1,
-          max: 200
-        }),
-        faker.random.number({
-          min: 1,
-          max: 100
-        }),
-        Math.random() > .66,
-        faker.lorem.sentences(Math.ceil(Math.random() * 4))
-      ];
-      db.query(reviewQuery, inserts, function(error, results) {
-        if (error) throw error;
-      });
-    }
-  }
-}
-
-
-// console.time();
-// generateUserData();
-// console.timeEnd();
-// generateUserDataAsync();
-// generateApartmentData();
-// generateReviewData();
-
-// db.end();
-
-// process.on('exit', () => {
-//   console.timeEnd('Timer end');
+// process.on('exit', function() {
+//   console.timeEnd(generatorsCombined);
 // });

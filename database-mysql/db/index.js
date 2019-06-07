@@ -1,5 +1,12 @@
 var mysql = require('mysql');
 
+var pool = mysql.createPool({
+  connectionLimit: 5,
+  user: 'root',
+  password: 'new_password',
+  database: 'reviews'
+});
+
 var db = mysql.createConnection({
   user: 'root',
   password: 'new_password',
@@ -8,10 +15,11 @@ var db = mysql.createConnection({
 
 db.connect(function(err) {
   if (err) {
-    console.error("Database connection error: ", err.stack);
-  } else {
-    console.log("Connected to database.");
+    console.error("error connection:", err.stack);
+    return;
   }
-});
+  console.log("Establish mysql connection");
+})
 
-module.exports = db;
+module.exports.pool = pool;
+module.exports.db = db;
