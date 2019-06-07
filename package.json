@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "webpack -p --watch",
-    "start": "node ./server/server.js"
+    "start": "node ./server/server.js",
+    "fix-memory-limit": "cross-env LIMIT=8192 increase-memory-limit"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +16,9 @@
     "axios": "^0.18.0",
     "cors": "^2.8.5",
     "express": "^4.16.2",
+    "express-graphql": "^0.8.0",
     "faker": "^4.1.0",
+    "graphql": "^14.3.1",
     "jquery": "^3.3.1",
     "mysql": "^2.17.1",
     "react": "^16.2.0",
@@ -36,6 +39,8 @@
     "nodemon": "^1.18.11",
     "url-loader": "^1.1.2",
     "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.2.1"
+    "webpack-dev-server": "^3.2.1",
+    "increase-memory-limit": "^1.0.3",
+    "cross-env": "^5.0.5"
   }
 }

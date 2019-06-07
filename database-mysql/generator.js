@@ -12,10 +12,11 @@ pool.getConnection(function(err, connection) {
     console.log("Connected to database.");
   }
 
-  var maxRecordsSize = 100000;
-  var times = 6;
+  var maxRecordsSize = 10000000;
+  var times = 5;
   var records = maxRecordsSize / (3 * times);
   
+  // console.time("timer started");
   var generateReviewValues = function() {
     var inserts = [];
     for (var i = 0; i < records; i++) {
@@ -58,48 +59,13 @@ pool.getConnection(function(err, connection) {
     return inserts;
   }
 
-  while (times > 0) {
-    var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
-    var reviewInserts = generateReviewValues();
-    pool.query(reviewQuery, [reviewInserts], function(error, results) {
-    if (error) return console.error(error);
-    console.log("Rows inserted:", results.affectedRows);
-
-      var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
-      var apartmentInserts = [];
-      for (var i = 0; i < records; i++) {
-        var values = [apartmentAddresses[i], i + 1];
-        apartmentInserts.push(values);
-      }
-      pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
-        if (error) return console.error(error.message);
-        console.log("Rows inserted:", results.affectedRows);
-        
-        var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-        var usersInserts = [];
-        for (var i = 0; i < records; i++) {
-          var values = [faker.name.firstName(), faker.internet.avatar()];
-          usersInserts.push(values);
-        }
-        pool.query(userQuery, [usersInserts], function(err, results) {
-          if (err) return console.error(err.message);
-          console.log("Rows inserted: ", results.affectedRows);                
-        });
-      });
-    });
-    times -= 1;
-  }
-
-  connection.release();
-
-  // var generateReviewData = function() {
+  // while (times > 0) {
   //   var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
   //   var reviewInserts = generateReviewValues();
   //   pool.query(reviewQuery, [reviewInserts], function(error, results) {
-  //     if (error) return console.error(error);
-  //     console.log("Rows inserted:", results.affectedRows);
+  //   if (error) return console.error(error);
+  //   console.log("Rows inserted:", results.affectedRows);
 
-  //   // apartments query
   //     var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
   //     var apartmentInserts = [];
   //     for (var i = 0; i < records; i++) {
@@ -110,7 +76,6 @@ pool.getConnection(function(err, connection) {
   //       if (error) return console.error(error.message);
   //       console.log("Rows inserted:", results.affectedRows);
         
-  //       // users query
   //       var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
   //       var usersInserts = [];
   //       for (var i = 0; i < records; i++) {
@@ -119,197 +84,232 @@ pool.getConnection(function(err, connection) {
   //       }
   //       pool.query(userQuery, [usersInserts], function(err, results) {
   //         if (err) return console.error(err.message);
-  //         console.log("Rows inserted: ", results.affectedRows);
-          
-  //         // repeat once
-  //           var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
-  //           var reviewInserts = generateReviewValues();
-  //           pool.query(reviewQuery, [reviewInserts], function(error, results) {
-  //           if (error) return console.error(error);
-  //           console.log("Rows inserted:", results.affectedRows);
-      
-  //         // apartments query
-  //           var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
-  //           var apartmentInserts = [];
-  //           for (var i = 0; i < records; i++) {
-  //             var values = [apartmentAddresses[i], i + 1];
-  //             apartmentInserts.push(values);
-  //           }
-  //           pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
-  //             if (error) return console.error(error.message);
-  //             console.log("Rows inserted:", results.affectedRows);
-              
-  //             // users query
-  //             var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-  //             var usersInserts = [];
-  //             for (var i = 0; i < records; i++) {
-  //               var values = [faker.name.firstName(), faker.internet.avatar()];
-  //               usersInserts.push(values);
-  //             }
-  //             pool.query(userQuery, [usersInserts], function(err, results) {
-  //               if (err) return console.error(err.message);
-  //               console.log("Rows inserted: ", results.affectedRows);
-
-  //               // repeat twice
-  //               var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
-  //               var reviewInserts = generateReviewValues();
-  //               pool.query(reviewQuery, [reviewInserts], function(error, results) {
-  //               if (error) return console.error(error);
-  //               console.log("Rows inserted:", results.affectedRows);
-          
-  //               // apartments query
-  //                 var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
-  //                 var apartmentInserts = [];
-  //                 for (var i = 0; i < records; i++) {
-  //                   var values = [apartmentAddresses[i], i + 1];
-  //                   apartmentInserts.push(values);
-  //                 }
-  //                 pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
-  //                   if (error) return console.error(error.message);
-  //                   console.log("Rows inserted:", results.affectedRows);
-                    
-  //                   // users query
-  //                   var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-  //                   var usersInserts = [];
-  //                   for (var i = 0; i < records; i++) {
-  //                     var values = [faker.name.firstName(), faker.internet.avatar()];
-  //                     usersInserts.push(values);
-  //                   }
-  //                   pool.query(userQuery, [usersInserts], function(err, results) {
-  //                     if (err) return console.error(err.message);
-  //                     console.log("Rows inserted: ", results.affectedRows);
-
-  //                     // repeat third time
-  //                     var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
-  //                     var reviewInserts = generateReviewValues();
-  //                     pool.query(reviewQuery, [reviewInserts], function(error, results) {
-  //                     if (error) return console.error(error);
-  //                     console.log("Rows inserted:", results.affectedRows);
-                
-  //                     // apartments query
-  //                       var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
-  //                       var apartmentInserts = [];
-  //                       for (var i = 0; i < records; i++) {
-  //                         var values = [apartmentAddresses[i], i + 1];
-  //                         apartmentInserts.push(values);
-  //                       }
-  //                       pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
-  //                         if (error) return console.error(error.message);
-  //                         console.log("Rows inserted:", results.affectedRows);
-                          
-  //                         // users query
-  //                         var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-  //                         var usersInserts = [];
-  //                         for (var i = 0; i < records; i++) {
-  //                           var values = [faker.name.firstName(), faker.internet.avatar()];
-  //                           usersInserts.push(values);
-  //                         }
-  //                         pool.query(userQuery, [usersInserts], function(err, results) {
-  //                           if (err) return console.error(err.message);
-  //                           console.log("Rows inserted: ", results.affectedRows);
-
-  //                           // repeat fourth time
-  //                           var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
-  //                           var reviewInserts = generateReviewValues();
-  //                           pool.query(reviewQuery, [reviewInserts], function(error, results) {
-  //                           if (error) return console.error(error);
-  //                           console.log("Rows inserted:", results.affectedRows);
-                      
-  //                           // apartments query
-  //                             var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
-  //                             var apartmentInserts = [];
-  //                             for (var i = 0; i < records; i++) {
-  //                               var values = [apartmentAddresses[i], i + 1];
-  //                               apartmentInserts.push(values);
-  //                             }
-  //                             pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
-  //                               if (error) return console.error(error.message);
-  //                               console.log("Rows inserted:", results.affectedRows);
-                                
-  //                               // users query
-  //                               var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-  //                               var usersInserts = [];
-  //                               for (var i = 0; i < records; i++) {
-  //                                 var values = [faker.name.firstName(), faker.internet.avatar()];
-  //                                 usersInserts.push(values);
-  //                               }
-  //                               pool.query(userQuery, [usersInserts], function(err, results) {
-  //                                 if (err) return console.error(err.message);
-  //                                 console.log("Rows inserted: ", results.affectedRows);
-
-  //                                 // repeat fourth time
-  //                                 var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
-  //                                 var reviewInserts = generateReviewValues();
-  //                                 pool.query(reviewQuery, [reviewInserts], function(error, results) {
-  //                                 if (error) return console.error(error);
-  //                                 console.log("Rows inserted:", results.affectedRows);
-                            
-  //                                 // apartments query
-  //                                   var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
-  //                                   var apartmentInserts = [];
-  //                                   for (var i = 0; i < records; i++) {
-  //                                     var values = [apartmentAddresses[i], i + 1];
-  //                                     apartmentInserts.push(values);
-  //                                   }
-  //                                   pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
-  //                                     if (error) return console.error(error.message);
-  //                                     console.log("Rows inserted:", results.affectedRows);
-                                      
-  //                                     // users query
-  //                                     var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-  //                                     var usersInserts = [];
-  //                                     for (var i = 0; i < records; i++) {
-  //                                       var values = [faker.name.firstName(), faker.internet.avatar()];
-  //                                       usersInserts.push(values);
-  //                                     }
-  //                                     pool.query(userQuery, [usersInserts], function(err, results) {
-  //                                       if (err) return console.error(err.message);
-  //                                       console.log("Rows inserted: ", results.affectedRows);                
-  //                                     });
-  //                                   });
-  //                                 });
-  //                                 //repeat ends
-
-
-  //                               });
-  //                             });
-  //                           });
-  //                           //repeat ends
-
-
-  //                         });
-  //                       });
-  //                     });
-  //                     //repeat ends
-
-
-  //                   });
-  //                 });
-  //               });
-  //               //repeat ends
-
-
-  //             });
-  //           });
-  //         });
-  //         //repeat ends
-
-
+  //         console.log("Rows inserted: ", results.affectedRows);                
   //       });
   //     });
   //   });
+  //   times -= 1;
   // }
+  // connection.release();
 
-  // generateReviewData();
-});
+  var generateReviewData = function() {
+    var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+    var reviewInserts = generateReviewValues();
+    pool.query(reviewQuery, [reviewInserts], function(error, results) {
+      if (error) return console.error(error);
+      console.log("Rows inserted:", results.affectedRows);
 
-pool.end(function(err) {
-  if (err) {
-    return console.error(err.message);
-  } else {
-    console.log("Closed all connections");
+    // apartments query
+      var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+      var apartmentInserts = [];
+      for (var i = 0; i < records; i++) {
+        var values = [apartmentAddresses[i], i + 1];
+        apartmentInserts.push(values);
+      }
+      pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+        if (error) return console.error(error.message);
+        console.log("Rows inserted:", results.affectedRows);
+        
+        // users query
+        var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+        var usersInserts = [];
+        for (var i = 0; i < records; i++) {
+          var values = [faker.name.firstName(), faker.internet.avatar()];
+          usersInserts.push(values);
+        }
+        pool.query(userQuery, [usersInserts], function(err, results) {
+          if (err) return console.error(err.message);
+          console.log("Rows inserted: ", results.affectedRows);
+          
+          // repeat once
+            var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+            var reviewInserts = generateReviewValues();
+            pool.query(reviewQuery, [reviewInserts], function(error, results) {
+            if (error) return console.error(error);
+            console.log("Rows inserted:", results.affectedRows);
+      
+          // apartments query
+            var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+            var apartmentInserts = [];
+            for (var i = 0; i < records; i++) {
+              var values = [apartmentAddresses[i], i + 1];
+              apartmentInserts.push(values);
+            }
+            pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+              if (error) return console.error(error.message);
+              console.log("Rows inserted:", results.affectedRows);
+              
+              // users query
+              var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+              var usersInserts = [];
+              for (var i = 0; i < records; i++) {
+                var values = [faker.name.firstName(), faker.internet.avatar()];
+                usersInserts.push(values);
+              }
+              pool.query(userQuery, [usersInserts], function(err, results) {
+                if (err) return console.error(err.message);
+                console.log("Rows inserted: ", results.affectedRows);
+
+                // repeat twice
+                var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+                var reviewInserts = generateReviewValues();
+                pool.query(reviewQuery, [reviewInserts], function(error, results) {
+                if (error) return console.error(error);
+                console.log("Rows inserted:", results.affectedRows);
+          
+                // apartments query
+                  var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+                  var apartmentInserts = [];
+                  for (var i = 0; i < records; i++) {
+                    var values = [apartmentAddresses[i], i + 1];
+                    apartmentInserts.push(values);
+                  }
+                  pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+                    if (error) return console.error(error.message);
+                    console.log("Rows inserted:", results.affectedRows);
+                    
+                    // users query
+                    var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+                    var usersInserts = [];
+                    for (var i = 0; i < records; i++) {
+                      var values = [faker.name.firstName(), faker.internet.avatar()];
+                      usersInserts.push(values);
+                    }
+                    pool.query(userQuery, [usersInserts], function(err, results) {
+                      if (err) return console.error(err.message);
+                      console.log("Rows inserted: ", results.affectedRows);
+
+                      // repeat third time
+                      var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+                      var reviewInserts = generateReviewValues();
+                      pool.query(reviewQuery, [reviewInserts], function(error, results) {
+                      if (error) return console.error(error);
+                      console.log("Rows inserted:", results.affectedRows);
+                
+                      // apartments query
+                        var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+                        var apartmentInserts = [];
+                        for (var i = 0; i < records; i++) {
+                          var values = [apartmentAddresses[i], i + 1];
+                          apartmentInserts.push(values);
+                        }
+                        pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+                          if (error) return console.error(error.message);
+                          console.log("Rows inserted:", results.affectedRows);
+                          
+                          // users query
+                          var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+                          var usersInserts = [];
+                          for (var i = 0; i < records; i++) {
+                            var values = [faker.name.firstName(), faker.internet.avatar()];
+                            usersInserts.push(values);
+                          }
+                          pool.query(userQuery, [usersInserts], function(err, results) {
+                            if (err) return console.error(err.message);
+                            console.log("Rows inserted: ", results.affectedRows);
+
+                            // repeat fourth time
+                            var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+                            var reviewInserts = generateReviewValues();
+                            pool.query(reviewQuery, [reviewInserts], function(error, results) {
+                            if (error) return console.error(error);
+                            console.log("Rows inserted:", results.affectedRows);
+                      
+                            // apartments query
+                              var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+                              var apartmentInserts = [];
+                              for (var i = 0; i < records; i++) {
+                                var values = [apartmentAddresses[i], i + 1];
+                                apartmentInserts.push(values);
+                              }
+                              pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+                                if (error) return console.error(error.message);
+                                console.log("Rows inserted:", results.affectedRows);
+                                
+                                // users query
+                                var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+                                var usersInserts = [];
+                                for (var i = 0; i < records; i++) {
+                                  var values = [faker.name.firstName(), faker.internet.avatar()];
+                                  usersInserts.push(values);
+                                }
+                                pool.query(userQuery, [usersInserts], function(err, results) {
+                                  if (err) return console.error(err.message);
+                                  console.log("Rows inserted: ", results.affectedRows);
+
+                                  // repeat fourth time
+                                  var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
+                                  var reviewInserts = generateReviewValues();
+                                  pool.query(reviewQuery, [reviewInserts], function(error, results) {
+                                  if (error) return console.error(error);
+                                  console.log("Rows inserted:", results.affectedRows);
+                            
+                                  // apartments query
+                                    var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
+                                    var apartmentInserts = [];
+                                    for (var i = 0; i < records; i++) {
+                                      var values = [apartmentAddresses[i], i + 1];
+                                      apartmentInserts.push(values);
+                                    }
+                                    pool.query(apartmentQuery, [apartmentInserts], function(error, results) {
+                                      if (error) return console.error(error.message);
+                                      console.log("Rows inserted:", results.affectedRows);
+                                      
+                                      // users query
+                                      var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+                                      var usersInserts = [];
+                                      for (var i = 0; i < records; i++) {
+                                        var values = [faker.name.firstName(), faker.internet.avatar()];
+                                        usersInserts.push(values);
+                                      }
+                                      pool.query(userQuery, [usersInserts], function(err, results) {
+                                        if (err) return console.error(err.message);
+                                        console.log("Rows inserted: ", results.affectedRows);                
+                                      });
+                                    });
+                                  });
+                                  //repeat ends
+
+
+                                });
+                              });
+                            });
+                            //repeat ends
+
+
+                          });
+                        });
+                      });
+                      //repeat ends
+
+
+                    });
+                  });
+                });
+                //repeat ends
+
+
+              });
+            });
+          });
+          //repeat ends
+
+
+        });
+      });
+    });
   }
+
+  generateReviewData();
 });
+
+// pool.end(function(err) {
+//   if (err) {
+//     return console.error(err.message);
+//   } else {
+//     console.log("Closed all connections");
+//   }
+// });
 
 // process.on('exit', function() {
 //   console.timeEnd(generatorsCombined);
