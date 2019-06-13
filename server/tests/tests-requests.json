@@ -1,0 +1,9 @@
+[
+  { "uri": "/"               , "expected": 100 },
+  { "uri": "/1"              , "expected": 100 },
+  { "uri": "/2"              , "expected": 100 },
+  { "uri": "/room/1"         , "expected": 100 },
+  { "uri": "/room/2"         , "expected": 100 },
+  { "uri": "/1/search/lorem" , "expected": 100 },
+  { "uri": "/2/search/epsum" , "expected": 100 }
+]

@@ -1,0 +1,17 @@
+Total: connections 1000 requests 1000 replies 1000 test-duration 0.906 s
+
+Connection rate: 1104.2 conn/s (0.9 ms/conn, <=1 concurrent connections)
+Connection time [ms]: min 0.5 avg 0.9 max 9.0 median 0.5 stddev 0.7
+Connection time [ms]: connect 0.2
+Connection length [replies/conn]: 1.000
+
+Request rate: 1104.2 req/s (0.9 ms/req)
+Request size [B]: 62.0
+
+Reply rate [replies/s]: min 0.0 avg 0.0 max 0.0 stddev 0.0 (0 samples)
+Reply time [ms]: response 0.7 transfer 0.0
+Reply size [B]: header 293.0 content 761.0 footer 0.0 (total 1054.0)
+Reply status: 1xx=0 2xx=1000 3xx=0 4xx=0 5xx=0
+
+CPU time [s]: user 0.14 system 0.68 (user 15.6% system 75.1% total 90.7%)
+Net I/O: 1203.4 KB/s (9.9*10^6 bps)
