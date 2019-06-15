@@ -1,0 +1,5 @@
+# Execute a javascript file
+mongo localhost:27017/test myjsfile.js
+
+# From mongo shell ## relative or absolute paths
+load("myjstest.js")

@@ -65,7 +65,6 @@ pool.getConnection(function(err, connection) {
     return inserts;
   };
 
-
   var generateReviewData = function() {
     var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
     var reviewInserts = generateReviewValues();
