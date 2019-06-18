@@ -13,7 +13,7 @@ var db = mysql.createConnection({
   user: 'root',
   password: 'root',
   database: 'reviews',
-  port: 80
+  port: process.env.PORT || 3002
 });
 
 db.connect(function(err) {
