@@ -12,7 +12,8 @@ var db = mysql.createConnection({
   host: '52.87.203.199',
   user: 'root',
   password: 'root',
-  database: 'reviews'
+  database: 'reviews',
+  port: 3002
 });
 
 db.connect(function(err) {
@@ -21,6 +22,6 @@ db.connect(function(err) {
     return;
   }
   console.log("Establish mysql connection");
-})
+});
 
 module.exports = db;
