@@ -4,7 +4,7 @@ var db = require("./db/index.js");
 var faker = require("faker");
 
 console.time();
-var maxRecordsSize = 10000000;
+var maxRecordsSize = 1000000;
 var times = 5;
 var records = maxRecordsSize / (2 * times);
 
@@ -59,7 +59,7 @@ var generateReviewData = function() {
   var reviewInserts = generateReviewValues();
   db.query(reviewQuery, [reviewInserts], function(error, results) {
     if (error) return console.error(error);
-    console.log("Rows inserted:", results.affectedRows);
+    console.log("Rows inserted:", results.affectedRows);r
 
     // users query
     var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
