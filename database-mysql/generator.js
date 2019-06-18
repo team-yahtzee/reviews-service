@@ -1,5 +1,4 @@
 var mysql = require("mysql");
-var { promisify } = require("util");
 var path = require("path");
 var db = require("./db/index.js");
 var faker = require("faker");
