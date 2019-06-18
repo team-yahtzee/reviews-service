@@ -9,7 +9,7 @@ var mysql = require('mysql');
 // });
 
 var db = mysql.createConnection({
-  host: '52.87.203.199',
+  host: 'localhost',
   user: 'root',
   password: 'root',
   database: 'reviews',
