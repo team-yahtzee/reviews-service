@@ -11,7 +11,7 @@ var createConnection = function(callback) {
 
     var db = client.db(dbName);
 
-    callback(db);
+    callback(db, client);
   });
 }
 

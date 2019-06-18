@@ -5,7 +5,7 @@ var { performance } = require('perf_hooks');
 var { generateReviewValues, generateUserValues } = require('./helper.js');
 var createConnection = require('./index.js');
 
-createConnection(function(db) {
+createConnection(function(db, client) {
   var reviews = db.collection('reviews');
   var users = db.collection('users');
 
@@ -26,6 +26,7 @@ createConnection(function(db) {
           count ++;
           insertData(count);
         } else {
+          client.close();
           var timeEnd = performance.now();
           console.log("Query insert completed in: ", (timeEnd - time)/60000, "mins");
         }

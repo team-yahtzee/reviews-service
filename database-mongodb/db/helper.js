@@ -32,6 +32,7 @@ var generateUserValues = function(seed) {
   var i = 0;
   while (i < seed) {
     var value = {
+      "id": i + 1,
       "name": faker.name.firstName(),
       "avatar": faker.internet.avatar()
     };

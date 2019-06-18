@@ -1,15 +1,16 @@
 var mysql = require("mysql");
-var { promisify } = require("util");
 var path = require("path");
 var db = require("./db/index.js");
 var faker = require("faker");
 var { apartmentAddresses } = require("./address.js");
 
 console.time();
-var maxRecordsSize = 10000000;
+
+var maxRecordsSize = 1000000;
 var times = 5;
 var records = maxRecordsSize / (2 * times);
 
+// console.time("timer started");
 var generateReviewValues = function() {
   var inserts = [];
   for (var i = 0; i < records; i++) {
@@ -195,47 +196,3 @@ var generateReviewData = function() {
 
 generateReviewData();
 
-// while (times > 0) {
-//   var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`
-//   var reviewInserts = generateReviewValues();
-//   db.query(reviewQuery, [reviewInserts], function(error, results) {
-//   if (error) return console.error(error);
-//   console.log("Rows inserted:", results.affectedRows);
-
-//     var apartmentQuery = `INSERT INTO apartments (address, owned_by_user_id) VALUES ?`
-//     var apartmentInserts = [];
-//     for (var i = 0; i < records; i++) {
-//       var values = [apartmentAddresses[i], i + 1];
-//       apartmentInserts.push(values);
-//     }
-//     db.query(apartmentQuery, [apartmentInserts], function(error, results) {
-//       if (error) return console.error(error.message);
-//       console.log("Rows inserted:", results.affectedRows);
-
-//       var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-//       var usersInserts = [];
-//       for (var i = 0; i < records; i++) {
-//         var values = [faker.name.firstName(), faker.internet.avatar()];
-//         usersInserts.push(values);
-//       }
-//       db.query(userQuery, [usersInserts], function(err, results) {
-//         if (err) return console.error(err.message);
-//         console.log("Rows inserted: ", results.affectedRows);
-//       });
-//     });
-//   });
-//   times -= 1;
-// }
-// connection.release();
-
-// db.end(function(err) {
-//   if (err) {
-//     return console.error(err.message);
-//   } else {
-//     console.log("Closed all connections");
-//   }
-// });
-
-// process.on('exit', function() {
-//   console.timeEnd(generatorsCombined);
-// });
