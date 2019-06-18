@@ -55,9 +55,6 @@ var generateReviewValues = function() {
 };
 
 var generateReviewData = function() {
-  db.query('SET GLOBAL connect_timeout=18800')
-  db.query('SET GLOBAL wait_timeout=18800')
-  db.query('SET GLOBAL interactive_timeout=18800')
   var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
   var reviewInserts = generateReviewValues();
   db.query(reviewQuery, [reviewInserts], function(error, results) {
