@@ -2,7 +2,6 @@ var mysql = require("mysql");
 var path = require("path");
 var db = require("./db/index.js");
 var faker = require("faker");
-var { apartmentAddresses } = require("./address.js");
 
 console.time();
 var maxRecordsSize = 10000000;

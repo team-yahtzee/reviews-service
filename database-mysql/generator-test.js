@@ -2,11 +2,10 @@ var mysql = require("mysql");
 var path = require("path");
 var db = require("./db/index.js");
 var faker = require("faker");
-var { apartmentAddresses } = require("./address.js");
 
 console.time();
 
-var maxRecordsSize = 100000;
+var maxRecordsSize = 10000;
 var times = 5;
 var records = maxRecordsSize / (2 * times);
 
@@ -74,122 +73,6 @@ var generateReviewData = function() {
     db.query(userQuery, [usersInserts], function(err, results) {
       if (err) return console.error(err.message);
       console.log("Rows inserted: ", results.affectedRows);
-
-      // repeat once
-      var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
-      var reviewInserts = generateReviewValues();
-      db.query(reviewQuery, [reviewInserts], function(error, results) {
-        if (error) return console.error(error);
-        console.log("Rows inserted:", results.affectedRows);
-
-        // users query
-        var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-        var usersInserts = [];
-        for (var i = 0; i < records; i++) {
-          var values = [faker.name.firstName(), faker.internet.avatar()];
-          usersInserts.push(values);
-        }
-        db.query(userQuery, [usersInserts], function(err, results) {
-          if (err) return console.error(err.message);
-          console.log("Rows inserted: ", results.affectedRows);
-
-          // repeat twice
-          var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
-          var reviewInserts = generateReviewValues();
-          db.query(reviewQuery, [reviewInserts], function(error, results) {
-            if (error) return console.error(error);
-            console.log("Rows inserted:", results.affectedRows);
-
-            // users query
-            var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-            var usersInserts = [];
-            for (var i = 0; i < records; i++) {
-              var values = [faker.name.firstName(), faker.internet.avatar()];
-              usersInserts.push(values);
-            }
-            db.query(userQuery, [usersInserts], function(err, results) {
-              if (err) return console.error(err.message);
-              console.log("Rows inserted: ", results.affectedRows);
-
-              // repeat third time
-              var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
-              var reviewInserts = generateReviewValues();
-              db.query(reviewQuery, [reviewInserts], function(error, results) {
-                if (error) return console.error(error);
-                console.log("Rows inserted:", results.affectedRows);
-
-                // users query
-                var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-                var usersInserts = [];
-                for (var i = 0; i < records; i++) {
-                  var values = [
-                    faker.name.firstName(),
-                    faker.internet.avatar()
-                  ];
-                  usersInserts.push(values);
-                }
-                db.query(userQuery, [usersInserts], function(err, results) {
-                  if (err) return console.error(err.message);
-                  console.log("Rows inserted: ", results.affectedRows);
-
-                  // repeat fourth time
-                  var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
-                  var reviewInserts = generateReviewValues();
-                  db.query(reviewQuery, [reviewInserts], function(error, results) {
-                    if (error) return console.error(error);
-                    console.log("Rows inserted:", results.affectedRows);
-
-                    // users query
-                    var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-                    var usersInserts = [];
-                    for (var i = 0; i < records; i++) {
-                      var values = [
-                        faker.name.firstName(),
-                        faker.internet.avatar()
-                      ];
-                      usersInserts.push(values);
-                    }
-                    db.query(userQuery, [usersInserts], function(err, results) {
-                      if (err) return console.error(err.message);
-                      console.log("Rows inserted: ", results.affectedRows);
-
-                      // repeat fourth time
-                      var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
-                      var reviewInserts = generateReviewValues();
-                      db.query(reviewQuery, [reviewInserts], function(error, results) {
-                        if (error) return console.error(error);
-                        console.log("Rows inserted:", results.affectedRows);
-
-                        // users query
-                        var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-                        var usersInserts = [];
-                        for (var i = 0; i < records; i++) {
-                          var values = [
-                            faker.name.firstName(),
-                            faker.internet.avatar()
-                          ];
-                          usersInserts.push(values);
-                        }
-                        db.query(userQuery, [usersInserts], function(err, results) {
-                          if (err) return console.error(err.message);
-                          console.log("Rows inserted: ", results.affectedRows);
-                          db.end();
-                          console.timeEnd();
-                        });
-                      });
-                      //end repeat
-                    });
-                  });
-                  //end repeat
-                });
-              });
-              //end repeat
-            });
-          });
-          //end repeat
-        });
-      });
-      //end repeat
     });
   });
 };
