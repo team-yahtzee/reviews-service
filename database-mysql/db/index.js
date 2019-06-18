@@ -13,7 +13,16 @@ var db = mysql.createConnection({
   user: 'root',
   password: 'root',
   database: 'reviews',
-  port: 3002
+  port: 3306
 });
+
+db.connect(function(err) {
+  if (err) {
+    console.error("error connection:", err.stack);
+    return;
+  }
+  console.log("Establish mysql connection");
+});
+
 
 module.exports = db;
