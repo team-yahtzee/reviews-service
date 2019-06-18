@@ -5,9 +5,6 @@ var faker = require("faker");
 
 console.time();
 
-<<<<<<< HEAD
-var maxRecordsSize = 100;
-=======
 db.connect(function(err) {
   if (err) {
     console.error("error connection:", err.stack);
@@ -16,8 +13,7 @@ db.connect(function(err) {
   console.log("Establish mysql connection");
 });
 
-var maxRecordsSize = 10000;
->>>>>>> 24ac2c375288ab7a3ddee150efef8cdba6b48675
+var maxRecordsSize = 1000;
 var times = 5;
 var records = maxRecordsSize / (2 * times);
 
