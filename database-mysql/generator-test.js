@@ -5,7 +5,7 @@ var faker = require("faker");
 
 console.time();
 
-var maxRecordsSize = 10000;
+var maxRecordsSize = 100;
 var times = 5;
 var records = maxRecordsSize / (2 * times);
 
