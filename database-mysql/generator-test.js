@@ -6,7 +6,7 @@ var { apartmentAddresses } = require("./address.js");
 
 console.time();
 
-var maxRecordsSize = 1000000;
+var maxRecordsSize = 100000;
 var times = 5;
 var records = maxRecordsSize / (2 * times);
 
