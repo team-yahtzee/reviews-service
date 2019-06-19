@@ -3,7 +3,7 @@ var db = require('./db/index.js');
 var faker = require('faker');
 
 var maxRecordsSize = 10000000;
-var combinedRecords = 1000;
+var combinedRecords = 2000;
 var records = combinedRecords / 2;
 var times = maxRecordsSize / records;
 
@@ -68,6 +68,7 @@ var generateReviewData = function(reviewItems) {
     }
     db.query(userQuery, [usersInserts], function(err, results) {
       if (err) return console.error(err.message);
+      console.log('Successfully seeded records');
     });
   });
 };
