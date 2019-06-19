@@ -1,16 +1,14 @@
-var mysql = require("mysql");
-var path = require("path");
-var db = require("./db/index.js");
-var faker = require("faker");
-
-console.time();
+var async = require('async');
+var db = require('./db/index.js');
+var faker = require('faker');
 
 var maxRecordsSize = 10000;
-var times = 5;
-var records = maxRecordsSize / (2 * times);
+var combinedRecords = 1000;
+var records = combinedRecords / 2;
+var times = maxRecordsSize / records;
 
-// console.time("timer started");
-var generateReviewValues = function() {
+var reviewItems = [];
+for (var t = 0; t < times; t++) {
   var inserts = [];
   for (var i = 0; i < records; i++) {
     if (Math.random() > 0.5) {
@@ -53,17 +51,15 @@ var generateReviewValues = function() {
       inserts.push(values);
     }
   }
-  return inserts;
-};
+  reviewItems.push(inserts);
+}
 
-var generateReviewData = function() {
+var generateReviewData = function(reviewItems) {
   var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
-  var reviewInserts = generateReviewValues();
-  db.query(reviewQuery, [reviewInserts], function(error, results) {
-    if (error) return console.error(error);
-    console.log("Rows inserted:", results.affectedRows);
 
-    // users query
+  db.query(reviewQuery, [reviewItems], function(error, results) {
+    if (error) return console.error(error);
+
     var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
     var usersInserts = [];
     for (var i = 0; i < records; i++) {
@@ -72,16 +68,17 @@ var generateReviewData = function() {
     }
     db.query(userQuery, [usersInserts], function(err, results) {
       if (err) return console.error(err.message);
-      console.log("Rows inserted: ", results.affectedRows);
     });
   });
 };
 
-generateReviewData();
-
-/**
- * MySQL timeout config
- * db.query('SET GLOBAL connect_timeout=18800');
- * db.query('SET GLOBAL wait_timeout=18800');
- * db.query('SET GLOBAL interactive_timeout=18800');
- */
+async.each(reviewItems, 
+  function(item, callback) {
+    generateReviewData(item);
+  }, 
+  function(err) {
+    if (err) return console.log(err);
+    db.end();
+    console.log('Successfully seeded data.');
+  }
+);
