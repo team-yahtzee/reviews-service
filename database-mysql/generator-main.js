@@ -68,6 +68,7 @@ var generateReviewData = function(reviewItems) {
     }
     db.query(userQuery, [usersInserts], function(err, results) {
       if (err) return console.error(err.message);
+      console.log('Successfully seeded records');
     });
   });
 };
