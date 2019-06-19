@@ -1,9 +1,8 @@
 var async = require('async');
 var db = require('./db/index.js');
 var faker = require('faker');
-var { performance } = require('perf_hooks');
 
-var maxRecordsSize = 10000;
+var maxRecordsSize = 10000000;
 var combinedRecords = 1000;
 var records = combinedRecords / 2;
 var times = maxRecordsSize / records;
