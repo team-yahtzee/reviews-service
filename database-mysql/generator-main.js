@@ -1,9 +1,9 @@
 var async = require('async');
 var db = require('./db/index.js');
-var faker = require('faker');
+var faker = require('faker');c
 
 var maxRecordsSize = 10000000;
-var combinedRecords = 1000;
+var combinedRecords = 2000;
 var records = combinedRecords / 2;
 var times = maxRecordsSize / records;
 
