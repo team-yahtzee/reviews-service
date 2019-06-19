@@ -1,6 +1,7 @@
 var async = require('async');
 var db = require('./db/index.js');
 var faker = require('faker');
+var { performance } = require('perf_hooks');
 
 var maxRecordsSize = 10000;
 var combinedRecords = 1000;
@@ -78,7 +79,6 @@ async.each(reviewItems,
   }, 
   function(err) {
     if (err) return console.log(err);
-    db.end();
     console.log('Successfully seeded data.');
   }
 );
