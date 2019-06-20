@@ -81,9 +81,8 @@ var generateReviewData = function() {
 };
 
 async.whilst(function() { return count < times; }, function(callback) {
-    generateReviewData();
-    console.log("Generator script executed.");
-    callback();
+  console.log("Generator script executed.");  
+  return generateReviewData();
   },
   function(err) {
     if (err) return console.log(err);
