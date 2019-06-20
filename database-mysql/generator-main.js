@@ -1,6 +1,6 @@
 var async = require('async');
-var db = require('./db/index.js');
 var faker = require('faker');
+var db = require('./db/index.js');
 
 var maxRecordsSize = 10000;
 var combinedRecords = 2000;
@@ -80,15 +80,19 @@ var generateReviewData = function() {
   count ++;
 };
 
-generateReviewData();
+// generateReviewData();
 
-// async.whilst(function() { return count < times; }, function(callback) {
-//     generateReviewData();
-//     console.log("Generator script executed.");
-//     callback();
-//   },
-//   function(err) {
-//     if (err) return console.log(err);
-//     console.log('Successfully seeded data.');
-//   }
-// );
+async.whilst(function() { return count < times; }, function(next) {
+  var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
+  var reviewItems = createReviewItems();
+  db.query(reviewQuery, [reviewItems], function(err, results) {
+    if (err) { return next(err); }
+    console.log("Number of review records inserted: ", records);
+    next();
+  });
+  },
+  function(err) {
+    if (err) throw err;
+    console.log('done!');
+  }
+);
