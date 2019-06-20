@@ -76,7 +76,10 @@ var generateReviewData = function() {
 
 async.whilst(
   function() { return count < times; },
-  generateReviewData(),
+  function() {
+    generateReviewData();
+    console.log("Generator script executed");
+  },
   function(err) {
     if (err) return console.log(err);
     console.log('Successfully seeded data.');
