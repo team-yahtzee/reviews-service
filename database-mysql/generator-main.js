@@ -68,7 +68,6 @@ var generateReviewData = function() {
   var reviewItems = createReviewItems();
   db.query(reviewQuery, [reviewItems], function(error, results) {
     if (error) return console.error(error);
-
     var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
     var usersInserts = createUserItems();
     db.query(userQuery, [usersInserts], function(err, results) {
