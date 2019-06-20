@@ -82,17 +82,21 @@ var generateReviewData = function() {
 
 // generateReviewData();
 
-async.whilst(function() { return count < times; }, function(next) {
-  var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
-  var reviewItems = createReviewItems();
-  db.query(reviewQuery, [reviewItems], function(err, results) {
-    if (err) { return next(err); }
-    console.log("Number of review records inserted: ", records);
-    next();
-  });
-  },
-  function(err) {
-    if (err) throw err;
-    console.log('done!');
-  }
-);
+var generateReviewsData = function() {
+  async.whilst(function() { return count < times; }, function(next) {
+    var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
+    var reviewItems = createReviewItems();
+    db.query(reviewQuery, [reviewItems], function(err, results) {
+      if (err) { return next(err); }
+      console.log("Number of review records inserted: ", records);
+      next();
+    });
+    },
+    function(err) {
+      if (err) throw err;
+      console.log('done!');
+    }
+  );
+}
+
+generateReviewsData();
