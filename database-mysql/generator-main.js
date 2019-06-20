@@ -62,41 +62,38 @@ var createUserItems = function() {
   return inserts;
 }
 
-var count = 0;
-var generateReviewData = function() {
-  var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
-  var reviewItems = createReviewItems();
+// var generateReviewData = function() {
+//   var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
+//   var reviewItems = createReviewItems();
   
-  db.query(reviewQuery, [reviewItems], function(error, results) {
-    if (error) return console.error(error);
-    var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
-    var usersInserts = createUserItems();
+//   db.query(reviewQuery, [reviewItems], function(error, results) {
+//     if (error) return console.error(error);
+//     var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
+//     var usersInserts = createUserItems();
 
-    db.query(userQuery, [usersInserts], function(err, results) {
-      if (err) return console.error(err.message);
-      console.log('Successfully seeded records');
-    });
-  });
-  count ++;
-};
+//     db.query(userQuery, [usersInserts], function(err, results) {
+//       if (err) return console.error(err.message);
+//       console.log('Successfully seeded records');
+//     });
+//   });
+//   count ++;
+// };
 
 // generateReviewData();
 
-var generateReviewsData = function() {
-  async.whilst(function() { return count < times; }, function(next) {
-    var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
-    var reviewItems = createReviewItems();
-    db.query(reviewQuery, [reviewItems], function(err, results) {
-      if (err) { return next(err); }
-      console.log("Number of review records inserted: ", records);
-      next();
-    });
-    },
-    function(err) {
-      if (err) throw err;
-      console.log('done!');
-    }
-  );
-}
-
-generateReviewsData();
+var counter = 0;
+async.whilst(function() { return count < times; }, function(next) {
+  counter++;
+  var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
+  var reviewItems = createReviewItems();
+  db.query(reviewQuery, [reviewItems], function(err, results) {
+    if (err) { return next(err); }
+    console.log("Number of review records inserted: ", records);
+    next();
+  });
+  },
+  function(err) {
+    if (err) throw err;
+    console.log('done!');
+  }
+);
