@@ -5,8 +5,7 @@ var faker = require("faker");
 
 console.time();
 var maxRecordsSize = 2000000;
-var times = 5;
-var records = maxRecordsSize / (2 * times);
+var records = Math.floor(maxRecordsSize / 12);
 
 var generateReviewValues = function() {
   var inserts = [];
