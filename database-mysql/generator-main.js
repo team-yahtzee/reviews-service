@@ -82,7 +82,7 @@ var createUserItems = function() {
 // generateReviewData();
 
 var counter = 0;
-async.whilst(function() { return count < times; }, function(next) {
+async.whilst(function() { return counter < times; }, function(next) {
   counter++;
   var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
   var reviewItems = createReviewItems();
