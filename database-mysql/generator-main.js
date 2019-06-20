@@ -74,11 +74,9 @@ var generateReviewData = function() {
   count ++;
 };
 
-async.whilst(
-  function() { return count < times; },
-  function(callback) {
+async.whilst(function() { return count < times; }, function(callback) {
     generateReviewData();
-    console.log("Generator script executed");
+    console.log("Generator script executed.");
     callback();
   },
   function(err) {
