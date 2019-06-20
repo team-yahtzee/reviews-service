@@ -66,12 +66,12 @@ var count = 0;
 var generateReviewData = function() {
   var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
   var reviewItems = createReviewItems();
-
+  
   db.query(reviewQuery, [reviewItems], function(error, results) {
     if (error) return console.error(error);
     var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
     var usersInserts = createUserItems();
-    
+
     db.query(userQuery, [usersInserts], function(err, results) {
       if (err) return console.error(err.message);
       console.log('Successfully seeded records');
@@ -80,6 +80,7 @@ var generateReviewData = function() {
   count ++;
 };
 
+<<<<<<< HEAD
 async.whilst(function() { return count < times; }, function(callback) {
   console.log("Generator script executed.");  
   return generateReviewData();
@@ -89,3 +90,17 @@ async.whilst(function() { return count < times; }, function(callback) {
     console.log('Successfully seeded data.');
   }
 );
+=======
+generateReviewData();
+
+// async.whilst(function() { return count < times; }, function(callback) {
+//     generateReviewData();
+//     console.log("Generator script executed.");
+//     callback();
+//   },
+//   function(err) {
+//     if (err) return console.log(err);
+//     console.log('Successfully seeded data.');
+//   }
+// );
+>>>>>>> e8d6236fa3047e88f98304ee862733c258d354bd
