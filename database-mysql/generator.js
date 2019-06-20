@@ -4,7 +4,7 @@ var db = require("./db/index.js");
 var faker = require("faker");
 
 console.time();
-var maxRecordsSize = 4000000;
+var maxRecordsSize = 2000000;
 var times = 5;
 var records = maxRecordsSize / (2 * times);
 
@@ -69,7 +69,6 @@ var generateReviewData = function() {
     }
     db.query(userQuery, [usersInserts], function(err, results) {
       if (err) return console.error(err.message);
-      console.log("Rows inserted: ", results.affectedRows);
 
       // repeat once
       var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
@@ -77,7 +76,6 @@ var generateReviewData = function() {
       db.query(reviewQuery, [reviewInserts], function(error, results) {
         if (error) return console.error(error);
   
-
         // users query
         var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
         var usersInserts = [];
@@ -87,7 +85,6 @@ var generateReviewData = function() {
         }
         db.query(userQuery, [usersInserts], function(err, results) {
           if (err) return console.error(err.message);
-          console.log("Rows inserted: ", results.affectedRows);
 
           // repeat twice
           var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
@@ -95,7 +92,6 @@ var generateReviewData = function() {
           db.query(reviewQuery, [reviewInserts], function(error, results) {
             if (error) return console.error(error);
       
-
             // users query
             var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
             var usersInserts = [];
@@ -105,14 +101,12 @@ var generateReviewData = function() {
             }
             db.query(userQuery, [usersInserts], function(err, results) {
               if (err) return console.error(err.message);
-              console.log("Rows inserted: ", results.affectedRows);
 
               // repeat third time
               var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
               var reviewInserts = generateReviewValues();
               db.query(reviewQuery, [reviewInserts], function(error, results) {
                 if (error) return console.error(error);
-          
 
                 // users query
                 var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
@@ -126,7 +120,6 @@ var generateReviewData = function() {
                 }
                 db.query(userQuery, [usersInserts], function(err, results) {
                   if (err) return console.error(err.message);
-                  console.log("Rows inserted: ", results.affectedRows);
 
                   // repeat fourth time
                   var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
@@ -155,7 +148,6 @@ var generateReviewData = function() {
                       db.query(reviewQuery, [reviewInserts], function(error, results) {
                         if (error) return console.error(error);
                   
-
                         // users query
                         var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
                         var usersInserts = [];
@@ -168,7 +160,6 @@ var generateReviewData = function() {
                         }
                         db.query(userQuery, [usersInserts], function(err, results) {
                           if (err) return console.error(err.message);
-                          console.log("Rows inserted: ", results.affectedRows);
                           db.end();
                           console.timeEnd();
                         });
