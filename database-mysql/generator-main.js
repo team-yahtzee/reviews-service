@@ -53,6 +53,7 @@ var createReviewItems = function() {
   return inserts;
 }
 
+var count = 0;
 var generateReviewData = function() {
   var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
   var reviewItems = createReviewItems();
@@ -70,18 +71,14 @@ var generateReviewData = function() {
       console.log('Successfully seeded records');
     });
   });
+  count ++;
 };
-
-var count = 0;
 
 async.whilst(
   function() { return count < times; },
-  function() {
-    count ++;
-    generateReviewData();
-  },
+  generateReviewData(),
   function(err) {
     if (err) return console.log(err);
-    else console.log('Successfully seeded data.');
+    console.log('Successfully seeded data.');
   }
 );
