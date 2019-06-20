@@ -3,7 +3,7 @@ var faker = require('faker');
 var db = require('./db/index.js');
 
 var maxRecordsSize = 10000;
-var combinedRecords = 10000;
+var combinedRecords = 20000;
 var records = combinedRecords / 2;
 var times = maxRecordsSize / combinedRecords;
 
