@@ -5,10 +5,9 @@ var faker = require('faker');
 var maxRecordsSize = 10000;
 var combinedRecords = 2000;
 var records = combinedRecords / 2;
-var times = maxRecordsSize / records;
+var times = maxRecordsSize / combinedRecords;
 
-var reviewItems = [];
-for (var t = 0; t < times; t++) {
+var createReviewItems = function() {
   var inserts = [];
   for (var i = 0; i < records; i++) {
     if (Math.random() > 0.5) {
@@ -51,12 +50,12 @@ for (var t = 0; t < times; t++) {
       inserts.push(values);
     }
   }
-  reviewItems.push(inserts);
+  return inserts;
 }
 
-var generateReviewData = function(reviewItems) {
+var generateReviewData = function() {
   var reviewQuery = `INSERT INTO reviews (date, text, rating, user_id, apartment_id, has_response, owner_response) VALUES ?`;
-
+  var reviewItems = createReviewItems();
   db.query(reviewQuery, [reviewItems], function(error, results) {
     if (error) return console.error(error);
 
@@ -73,12 +72,16 @@ var generateReviewData = function(reviewItems) {
   });
 };
 
-async.each(reviewItems, 
-  function(item, callback) {
-    generateReviewData(item);
-  }, 
+var count = 0;
+
+async.whilst(
+  function() { return count < times; },
+  function() {
+    count ++;
+    generateReviewData();
+  },
   function(err) {
     if (err) return console.log(err);
-    console.log('Successfully seeded data.');
+    else console.log('Successfully seeded data.');
   }
 );
