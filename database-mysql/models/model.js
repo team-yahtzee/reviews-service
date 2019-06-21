@@ -1,7 +1,7 @@
 var db = require('../db/index.js');
 
 var getReviewsFromDatabase = function(id, callback) {
-  var queryStr = `SELECT users.name, users.avatar, reviews.date, reviews.text, reviews.rating, reviews.has_response, reviews.owner_response FROM users, reviews WHERE users.id = reviews.user_id AND reviews.apartment_id = ${id};`;
+  var queryStr = `SELECT users.name, users.avatar, reviews.date, reviews.text, reviews.rating, reviews.has_response, reviews.owner_response FROM users, reviews WHERE users.id = reviews.user_id AND reviews.apartment_id = ${id} LIMIT 49;`;
   db.query(queryStr, function(err, results) {
     if (err) {
       console.error('Error querying database for all results', err);
