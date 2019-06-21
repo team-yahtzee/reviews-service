@@ -6,7 +6,7 @@ var mysql = require('mysql');
 //   user: 'root',
 //   password: 'new_password',
 //   database: 'reviews'
-// });
+// })
 
 var db = mysql.createConnection({
   host: 'localhost',
