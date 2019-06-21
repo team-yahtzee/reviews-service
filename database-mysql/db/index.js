@@ -11,7 +11,7 @@ var mysql = require('mysql');
 var db = mysql.createConnection({
   host: '3.95.167.44',
   user: 'root',
-  password: 'new_password',
+  password: 'root',
   database: 'reviews',
   port: 3306
 });
