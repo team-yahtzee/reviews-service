@@ -13,7 +13,7 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(cors());
 
-app.get('/:id', (req, res) => {
+app.get('3.95.167.44/:id', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
