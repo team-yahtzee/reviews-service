@@ -13,11 +13,11 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(cors());
 
-app.get('3.95.167.44/:id', (req, res) => {
+app.get('/:id', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
-app.get('3.95.167.44/room/:id', (req, res) => {
+app.get('/room/:id', (req, res) => {
   getReviewsFromDatabase(req.params.id, (err, data) => {
     if (err) {
       console.error('Error retrieving all reviews from database', err);
@@ -43,7 +43,7 @@ app.get('3.95.167.44/room/:id', (req, res) => {
   });
 });
 
-app.get('3.95.167.44/:id/search/:word', (req, res) => {
+app.get('/:id/search/:word', (req, res) => {
   getSearchResultsFromDatabase(req.params.id, req.params.word, (err, data) => {
     if (err) {
       console.error('Error retrieving searched reviews from database', err);
