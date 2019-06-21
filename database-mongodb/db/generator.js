@@ -10,7 +10,8 @@ createConnection(function(db, client) {
   var users = db.collection('users');
 
   var time = performance.now();
-  var insertData = function(count = 0) {
+  var insertData = function(count) {
+    var count = count || 0;
     var seed = 100000;
     var total = 10000000;
 
