@@ -3,13 +3,10 @@ var path = require("path");
 var db = require("./db/index.js");
 var faker = require("faker");
 
-console.time();
-
 var maxRecordsSize = 10000;
 var times = 5;
 var records = maxRecordsSize / (2 * times);
 
-// console.time("timer started");
 var generateReviewValues = function() {
   var inserts = [];
   for (var i = 0; i < records; i++) {

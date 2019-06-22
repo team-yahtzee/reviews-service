@@ -1,9 +1,5 @@
-var mysql = require("mysql");
-var { promisify } = require("util");
-var path = require("path");
 var pool = require("./db/index.js");
 var faker = require("faker");
-var { apartmentAddresses } = require("./address.js");
 
 pool.getConnection(function(err, connection) {
   console.time();
@@ -16,12 +12,11 @@ pool.getConnection(function(err, connection) {
 
   var maxRecordsSize = 2000000;
   var times = 6;
-  var records = Math.floor(maxRecordsSize / (2 * times));
 
-  // console.time("timer started");
   var generateReviewValues = function() {
+    console.time("timer started");
     var inserts = [];
-    for (var i = 0; i < records; i++) {
+    for (var i = 0; i < Math.floor(maxRecordsSize/(2*times)); i++) {
       if (Math.random() > 0.5) {
         values = [
           faker.date.month() +
@@ -76,7 +71,7 @@ pool.getConnection(function(err, connection) {
       // users query
       var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
       var usersInserts = [];
-      for (var i = 0; i < records; i++) {
+      for (var i = 0; i < Math.floor(maxRecordsSize/(2*times)); i++) {
         var values = [faker.name.firstName(), faker.internet.avatar()];
         usersInserts.push(values);
       }
@@ -94,7 +89,7 @@ pool.getConnection(function(err, connection) {
           // users query
           var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
           var usersInserts = [];
-          for (var i = 0; i < records; i++) {
+          for (var i = 0; i < Math.floor(maxRecordsSize/(2*times)); i++) {
             var values = [faker.name.firstName(), faker.internet.avatar()];
             usersInserts.push(values);
           }
@@ -112,7 +107,7 @@ pool.getConnection(function(err, connection) {
               // users query
               var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
               var usersInserts = [];
-              for (var i = 0; i < records; i++) {
+              for (var i = 0; i < Math.floor(maxRecordsSize/(2*times)); i++) {
                 var values = [faker.name.firstName(), faker.internet.avatar()];
                 usersInserts.push(values);
               }
@@ -130,7 +125,7 @@ pool.getConnection(function(err, connection) {
                   // users query
                   var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
                   var usersInserts = [];
-                  for (var i = 0; i < records; i++) {
+                  for (var i = 0; i < Math.floor(maxRecordsSize/(2*times)); i++) {
                     var values = [
                       faker.name.firstName(),
                       faker.internet.avatar()
@@ -151,7 +146,7 @@ pool.getConnection(function(err, connection) {
                       // users query
                       var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
                       var usersInserts = [];
-                      for (var i = 0; i < records; i++) {
+                      for (var i = 0; i < Math.floor(maxRecordsSize/(2*times)); i++) {
                         var values = [
                           faker.name.firstName(),
                           faker.internet.avatar()
@@ -172,7 +167,7 @@ pool.getConnection(function(err, connection) {
                           // users query
                           var userQuery = `INSERT INTO users (name, avatar) VALUES ?`;
                           var usersInserts = [];
-                          for (var i = 0; i < records; i++) {
+                          for (var i = 0; i < Math.floor(maxRecordsSize/(2*times)); i++) {
                             var values = [
                               faker.name.firstName(),
                               faker.internet.avatar()
@@ -182,8 +177,6 @@ pool.getConnection(function(err, connection) {
                           pool.query(userQuery, [usersInserts], function(err, results) {
                             if (err) return console.error(err.message);
                             console.log("Rows inserted: ", results.affectedRows);
-                            // connection.release();
-                            console.timeEnd();
                           });
                         });
                         //end repeat
@@ -202,6 +195,8 @@ pool.getConnection(function(err, connection) {
       });
     });
     //end
+    connection.release();
+    console.timeEnd();
   };
 
   generateReviewData();
