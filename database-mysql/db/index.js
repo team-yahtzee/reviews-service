@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var config = require('./config.json');
 
 // var pool = mysql.createPool({
 //   host: 'localhost',
@@ -9,11 +10,11 @@ var mysql = require('mysql');
 // })
 
 var db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'reviews',
-  port: 3306
+  host: config.host,
+  user: config.user,
+  password: config.password,
+  database: config.database,
+  port: config.port
 });
 
 db.connect(function(err) {
